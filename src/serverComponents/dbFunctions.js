@@ -4,7 +4,7 @@ import 'dotenv/config';
 
 //*****Old runquery function*****
 async function runQuery(query, values) {
-  const connectionString = process.env.AZURE;
+  const connectionString = process.env.DATABASE_URL;
 
   const pool = new Pool({
     connectionString: connectionString,

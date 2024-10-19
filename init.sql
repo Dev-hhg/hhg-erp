@@ -367,10 +367,10 @@ CREATE TRIGGER update_paid_timestamp_trigger BEFORE UPDATE OF paid ON public.ven
 
 INSERT INTO public.users (username, password, role) 
 VALUES
-('guest_user', '112345', 'guest'),
-('regular_user', '112345', 'user'),
-('admin_user', '112345', 'admin'),
-('super_admin', '112345', 'super-admin');
+('guest_user', '$2a$10$TwliPe.pCKHLIA2CYGUjqOUta2g5bCOKdwN0DqcwABUXWe9ohyv2C', 'guest'),
+('regular_user', '$2a$10$TwliPe.pCKHLIA2CYGUjqOUta2g5bCOKdwN0DqcwABUXWe9ohyv2C', 'user'),
+('admin_user', '$2a$10$TwliPe.pCKHLIA2CYGUjqOUta2g5bCOKdwN0DqcwABUXWe9ohyv2C', 'admin'),
+('super_admin', '$2a$10$TwliPe.pCKHLIA2CYGUjqOUta2g5bCOKdwN0DqcwABUXWe9ohyv2C', 'super-admin');
 
 
 INSERT INTO public.vendor (vendorname, mobilenumber, galanumber, token_no, vendornameshort, vendorpriority) 

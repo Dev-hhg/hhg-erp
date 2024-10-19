@@ -7,7 +7,7 @@ export const config = {
     '/addfarmer',
     '/addvendor',
     '/advance',
-    '/createUser',
+    // '/createUser',
     '/dailybook',
     '/editvendor',
     '/entry',

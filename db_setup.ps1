@@ -1,5 +1,5 @@
 # Windows PowerShell script (setup.ps1)
-$env:DATABASE_URL = "postgresql://hhg_owner:complex%23password69@localhost:5433/hhg"
+# $env:DATABASE_URL = "postgresql://hhg_owner:VerySecurePassword69@localhost:5433/hhg"
 
 # Check if the volume exists
 $volumeExists = docker volume ls -q -f name=hhg-postgres-data

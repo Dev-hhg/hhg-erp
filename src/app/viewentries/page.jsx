@@ -61,7 +61,7 @@ function Page() {
     setLoading(true);
     function getDayName(dateStr) {
       var date = new Date(dateStr);
-      return date.toLocaleDateString("mr-IN", { weekday: "long" });
+      return date.toLocaleDateString("en-IN", { weekday: "long" });
     }
     getTodayEntries(date)
       .then((data) => {
@@ -516,8 +516,8 @@ function Page() {
             <DateSection date={date} setDate={setDate} />
             <div className="flex flex-row justify-center items-center space-x-6 mt-4">
               <h1 className="  text-xl font-bold text-center">
-                {day}, {date.split("-").reverse().join("-")} च्या नोंदी{" "}
-                {total.quantity} डाग
+                Entries for {day}, {date.split("-").reverse().join("-")} {" "}
+                {total.quantity} Bags
               </h1>
             </div>
             <div className="flex space-x-4 mt-1">

@@ -12,6 +12,7 @@ async function login(credentials) {
     const passwordsMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordsMatch) {
+      console.log('Password does not match');
       return null;
     } else {
       console.log('User found');

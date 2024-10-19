@@ -239,7 +239,7 @@ function Page() {
 
 			<div className="rounded-lg bg-white p-8 shadow-lg lg:col-span-3 lg:p-12">
 				<DateSection date={date} setDate={setDate} />
-				<h1 className="text-3xl font-bold text-center">गाडी भाडे मेमो</h1>
+				<h1 className="text-3xl font-bold text-center">Transporter Memo</h1>
 				<div className="mt-8">
 					<table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm mt-5">
 						<thead className="">
