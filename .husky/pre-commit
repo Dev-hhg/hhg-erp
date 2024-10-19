@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Exit immediately if a command exits with a non-zero status
+set -e
+
+# Run linting and formatting checks
+echo "Running linting and formatting checks..."
+npm run lint
+
+# Additional tasks can be added here
+# For example, running tests or checking for sensitive information
+echo "Skipping tests..."
+
+
+# You can also check for any uncommitted changes
+if ! git diff --quiet; then
+  echo "There are uncommitted changes!"
+  exit 1
+fi
+
+echo "Pre-commit checks passed!"

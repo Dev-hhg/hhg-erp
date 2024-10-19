@@ -13,11 +13,12 @@ const VendorSelect = ({ handleChange, value, setLoadingVendors, loading }) => {
         setVendors(vendorNamesArray);
         // console.log("vendors fetched");
       } catch (error) {
-        setAlert({
-          state: true,
-          type: 'danger',
-          message: error,
-        });
+        // setAlert({
+        //   state: true,
+        //   type: 'danger',
+        //   message: error,
+        // });
+        console.log('Error in vendor fetching!');
       } finally {
         setLoadingVendors(false);
       }

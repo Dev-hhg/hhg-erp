@@ -24,7 +24,7 @@ export default function DateSection({ date, setDate }) {
   };
 
   return (
-    <div className="flex justify-between items-center h-9 p-2">
+    <div className="flex h-9 items-center justify-between p-2">
       <div className="w-6">
         {date != minimumDate && (
           <img
@@ -40,7 +40,7 @@ export default function DateSection({ date, setDate }) {
         min={minimumDate}
         max={today}
         onChange={handleDateChange}
-        className="rounded-lg border-gray-200 p-3 text-sm hover:cursor-pointer "
+        className="rounded-lg border-gray-200 p-3 text-sm hover:cursor-pointer"
       />
       <div className="w-6 hover:cursor-pointer">
         {date != today && <img src="/right-arrow.svg" onClick={handleNext} />}

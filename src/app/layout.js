@@ -4,7 +4,6 @@ import './globals.css';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { VendorProvider } from './Context/vendorcontext';
-import PlausibleProvider from 'next-plausible';
 import { AuthProvider } from './Context/Provider';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -25,9 +24,9 @@ export default function RootLayout({ children }) {
       <body className={`${dev.className} ${inter.className} h-full`}>
         <AuthProvider>
           <VendorProvider>
-            <div className="flex flex-col min-h-screen bg-slate-800">
+            <div className="flex min-h-screen flex-col bg-slate-800">
               <Nav />
-              <main className="flex-1  lg:ml-[16.67%] pt-16 md:pt-6">
+              <main className="flex-1 pt-16 md:pt-6 lg:ml-[16.67%]">
                 <div className="p-2 md:p-2 lg:p-6">{children}</div>
               </main>
             </div>

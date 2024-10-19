@@ -55,7 +55,7 @@ export default function Page() {
 
   return (
     <div className="p-14">
-      <div className="relative rounded-lg bg-white p-8 shadow-lg lg:col-span-3 lg:p-12 ">
+      <div className="relative rounded-lg bg-white p-8 shadow-lg lg:col-span-3 lg:p-12">
         {alert.state && (
           <Alert
             message={alert.message}
@@ -66,10 +66,10 @@ export default function Page() {
           />
         )}
         {loading && (
-          <div className="absolute -translate-x-1/2 -translate-y-1/2 top-2/4 left-1/2">
+          <div className="absolute left-1/2 top-2/4 -translate-x-1/2 -translate-y-1/2">
             <svg
               aria-hidden="true"
-              className="inline w-10 h-10text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+              className="h-10text-gray-200 inline w-10 animate-spin fill-blue-600 dark:text-gray-600"
               viewBox="0 0 100 101"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -112,7 +112,7 @@ export default function Page() {
               Mobile Number
             </label>
             <input
-              className=" w-full rounded-lg border-gray-200 p-3 text-sm "
+              className="w-full rounded-lg border-gray-200 p-3 text-sm"
               placeholder="Mobile Number"
               type="number"
               id="mobileNumber"
@@ -144,7 +144,7 @@ export default function Page() {
           <div className="mt-4">
             <button
               type="submit"
-              className={`w-full rounded-lg bg-black px-5 py-3 font-medium text-white sm:w-auto  ${
+              className={`w-full rounded-lg bg-black px-5 py-3 font-medium text-white sm:w-auto ${
                 submit ? 'cursor-not-allowed bg-gray-400' : ''
               }`}
               disabled={submit}
