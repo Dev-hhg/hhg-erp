@@ -10,21 +10,21 @@ I'm still updating the files and the code.
 - [ ] Complete the README file
 - [x] Add a license
 - [x] Add a code of conduct
-- [ ] Add a contributing guideline
-- [ ] Add a issue template
+- [x] Add a contributing guideline
+- [x] Add a issue template
 - [ ] Add a pull request template
-- [ ] Add hacktoberfest label
-- [ ] Add girlscript label
+- [x] Add hacktoberfest label
+- [x] Add girlscript label
 - [ ] Open a pull request
 - [ ] Merge pull request
 - [ ] Add a wiki
 - [ ] Add a project board
-- [ ] Add a security policy
-- [ ] Add a dependabot
+- [x] Add a security policy
+- [x] Add a dependabot
 - [ ] Add a code scanning
 - [ ] Add a secret scanning
-- [ ] Add a vulnerability alert
-- [ ] Add a dependabot alert
+- [x] Add a vulnerability alert
+- [x] Add a dependabot alert
 - [ ] Add a dependabot security alert
 - [ ] Add a dependabot pull request
 - [ ] Add a dependabot pull request comment
