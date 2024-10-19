@@ -1,4 +1,4 @@
-const runQuery = require("./runquery");
+const runQuery = require('./runquery');
 function createFarmerTable() {
   const createFarmerTableQuery = `
     CREATE TABLE IF NOT EXISTS farmers (

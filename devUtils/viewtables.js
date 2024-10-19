@@ -1,5 +1,5 @@
 // see all the rows of the vendor table
-const runQuery = require("./runquery");
+const runQuery = require('./runquery');
 // async function getVendors() {
 // 	const getDataQuery = `SELECT * FROM Vendor;`;
 // 	const result = await runQuery(getDataQuery);
@@ -42,15 +42,15 @@ const runQuery = require("./runquery");
 // see all the entries in Entry table
 // const runQuery = require("./runquery");
 async function getEntries() {
-	const getDataQuery = `
+  const getDataQuery = `
         SELECT date, vendorName, item, quantity, weight, payable
         FROM Entry
         LEFT OUTER JOIN vendorMemo ON Entry.transactionid = vendorMemo.entryid
 		WHERE Entry.farmerName = 'john doe';
 
     `;
-	const result = await runQuery(getDataQuery);
-	console.log(result);
+  const result = await runQuery(getDataQuery);
+  console.log(result);
 }
 
 getEntries();

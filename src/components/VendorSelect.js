@@ -1,7 +1,7 @@
-"use client";
-import { VendorContext } from "@/app/Context/vendorcontext";
-import { getVendors } from "@/serverComponents/dbFunctions";
-import { useEffect, useContext } from "react";
+'use client';
+import { VendorContext } from '@/app/Context/vendorcontext';
+import { getVendors } from '@/serverComponents/dbFunctions';
+import { useEffect, useContext } from 'react';
 
 const VendorSelect = ({ handleChange, value, setLoadingVendors, loading }) => {
   const { vendors, setVendors } = useContext(VendorContext);
@@ -15,7 +15,7 @@ const VendorSelect = ({ handleChange, value, setLoadingVendors, loading }) => {
       } catch (error) {
         setAlert({
           state: true,
-          type: "danger",
+          type: 'danger',
           message: error,
         });
       } finally {

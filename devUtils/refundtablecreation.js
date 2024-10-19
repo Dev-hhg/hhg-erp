@@ -1,7 +1,7 @@
-const runQuery = require("./runquery");
+const runQuery = require('./runquery');
 
 function createRefundTable() {
-	const createTableQuery = `
+  const createTableQuery = `
     CREATE TABLE IF NOT EXISTS Refund (
     id SERIAL PRIMARY KEY,
     vendorName VARCHAR(30) NOT NULL,
@@ -15,11 +15,11 @@ function createRefundTable() {
     refundAdded TIMESTAMP WITH TIME ZONE DEFAULT (NOW() AT TIME ZONE 'Asia/Kolkata')
   );
 `;
-	runQuery(createTableQuery);
+  runQuery(createTableQuery);
 }
 
 function createdeletedRefundTable() {
-	const createTableQuery1 = `CREATE TABLE IF NOT EXISTS deletedRefundData (
+  const createTableQuery1 = `CREATE TABLE IF NOT EXISTS deletedRefundData (
     id SERIAL PRIMARY KEY,
     vendorName VARCHAR(30) NOT NULL,
     date DATE NOT NULL,

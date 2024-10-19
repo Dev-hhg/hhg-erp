@@ -1,6 +1,6 @@
-"use server";
-import { Pool } from "pg";
-import "dotenv/config";
+'use server';
+import { Pool } from 'pg';
+import 'dotenv/config';
 
 //*****Old runquery function*****
 async function runQuery(query, values) {
@@ -14,10 +14,10 @@ async function runQuery(query, values) {
     const client = await pool.connect();
     const result = await client.query(query, values);
     client.release();
-    console.log("Query executed successfully:\n", query, values);
+    console.log('Query executed successfully:\n', query, values);
     return result.rows;
   } catch (err) {
-    console.error("Error executing query:", err);
+    console.error('Error executing query:', err);
     throw err;
   }
 }
@@ -54,7 +54,7 @@ async function updateEntryData({
   refund,
   transportDetails: { transporterName, vehicleNo },
 }) {
-  let updateQuery = "";
+  let updateQuery = '';
   console.log(vendor, date, newData);
   const data = await getEntriesByDateVendor({ date, vendor });
   const refundData = await getRefundByDateVendor({ date, vendor });
@@ -66,12 +66,12 @@ async function updateEntryData({
       updates[entry.transactionid] = newData[i].transportrate;
   });
   if (Object.keys(updates).length !== 0) {
-    updateQuery += "UPDATE ENTRY SET transportrate = CASE ";
+    updateQuery += 'UPDATE ENTRY SET transportrate = CASE ';
 
     for (const transactionid in updates) {
       updateQuery += `WHEN transactionid = ${transactionid} THEN ${updates[transactionid]} `;
     }
-    updateQuery += "ELSE transportrate END;\n";
+    updateQuery += 'ELSE transportrate END;\n';
   }
   if (refundData.length === 0) {
     updateQuery += `INSERT INTO Refund (vendorName, date, value, transporterName, vehicleNo) VALUES ('${sanitizeString(
@@ -146,7 +146,7 @@ async function updateEntryData({
 // }
 
 async function updateVmData({ vendor, date, updates, additions, refund }) {
-  let updateQuery = "";
+  let updateQuery = '';
   console.log(vendor, date, updates, additions, refund);
   try {
     // Handle updates
@@ -165,7 +165,7 @@ async function updateVmData({ vendor, date, updates, additions, refund }) {
           (record) =>
             `('${record.transactionid}', ${record.payable}, ${record.rate}, ${record.commision})`
         )
-        .join(", ");
+        .join(', ');
       updateQuery += `INSERT INTO vendorMemo (entryid, payable, rate, commision) VALUES ${insertValues};\n`;
     }
 
@@ -174,7 +174,7 @@ async function updateVmData({ vendor, date, updates, additions, refund }) {
 
     updateQuery += `\nUPDATE Refund SET  vmdata = true WHERE date = '${date}' AND vendorName = '${sanitizeString(vendor)}';`;
 
-    console.log("refundData", refundData);
+    console.log('refundData', refundData);
     if (refundData[0]?.value === refund) {
       // If the refund value is the same as the existing value, do nothing
     } else {
@@ -182,11 +182,11 @@ async function updateVmData({ vendor, date, updates, additions, refund }) {
     }
 
     // Execute the update query if necessary
-    if (updateQuery !== "") {
+    if (updateQuery !== '') {
       await runQuery(updateQuery);
-      return { message: "Updated Successfully" };
+      return { message: 'Updated Successfully' };
     } else {
-      return { message: "Nothing to update" };
+      return { message: 'Nothing to update' };
     }
   } catch (error) {
     throw new Error(`Error updating data: ${error.message}`);
@@ -194,11 +194,11 @@ async function updateVmData({ vendor, date, updates, additions, refund }) {
 }
 
 async function updateTransportRate(updates) {
-  let updateQuery = "UPDATE ENTRY SET transportrate = CASE ";
+  let updateQuery = 'UPDATE ENTRY SET transportrate = CASE ';
   for (const transactionid in updates) {
     updateQuery += `WHEN transactionid = ${transactionid} THEN ${updates[transactionid]} `;
   }
-  updateQuery += "ELSE transportrate END;";
+  updateQuery += 'ELSE transportrate END;';
 
   await runQuery(updateQuery);
 }
@@ -210,7 +210,7 @@ async function getTodayEntries(date) {
 
 async function getEntriesByDateVendor({ date, vendor }) {
   const getDataQuery =
-    "SELECT * FROM Entry LEFT OUTER JOIN FARMERS ON ENTRY.farmerid = FARMERS.farmerid WHERE date = $1 AND vendorName = $2 ORDER BY farmername ASC;";
+    'SELECT * FROM Entry LEFT OUTER JOIN FARMERS ON ENTRY.farmerid = FARMERS.farmerid WHERE date = $1 AND vendorName = $2 ORDER BY farmername ASC;';
   console.log(getDataQuery);
 
   return await runQuery(getDataQuery, [date, sanitizeString(vendor)]);
@@ -241,8 +241,8 @@ async function addVendor({ vendorName, mobileNumber, galanumber }) {
 
     await runQuery(insertDataQuery, values);
   } else {
-    console.log("vendor already present");
-    return { error: "Vendor Already Present" };
+    console.log('vendor already present');
+    return { error: 'Vendor Already Present' };
   }
 }
 
@@ -272,13 +272,13 @@ async function addRefund({ vendor, date, value, transporterName, vehicleNo }) {
 
 async function getRefundByDateVendor({ date, vendor }) {
   const getDataQuery =
-    "SELECT * FROM Refund WHERE date = $1 AND vendorName = $2;";
+    'SELECT * FROM Refund WHERE date = $1 AND vendorName = $2;';
 
   return await runQuery(getDataQuery, [date, sanitizeString(vendor)]);
 }
 async function getRefundByVendor({ vendor, fromDate, toDate }) {
   const getDataQuery =
-    "SELECT date, value FROM Refund WHERE  vendorName = $1 AND date >= $2 AND date <= $3 ;";
+    'SELECT date, value FROM Refund WHERE  vendorName = $1 AND date >= $2 AND date <= $3 ;';
 
   return await runQuery(getDataQuery, [
     sanitizeString(vendor),
@@ -338,7 +338,7 @@ async function addVmData(records) {
         rate
       )}, ${Number(commision)})`;
     })
-    .join(", ");
+    .join(', ');
 
   const insertMemoQuery = `
     INSERT INTO vendorMemo (entryid, payable, rate, commision)
@@ -353,13 +353,13 @@ async function updateVMData(updates) {
   for (const id in updates) {
     const updateCols = Object.entries(updates[id])
       .map(([col, val]) => `${col} = ${val}`)
-      .join(", ");
+      .join(', ');
 
     const subQuery = `UPDATE vendorMemo SET ${updateCols} WHERE entryid = ${id};`;
     updateQueries.push(subQuery);
   }
 
-  const updateVendorMemoQuery = updateQueries.join("\n");
+  const updateVendorMemoQuery = updateQueries.join('\n');
 
   return updateVendorMemoQuery;
 }
@@ -382,7 +382,7 @@ async function getEntriesVmDataByVendor({ vendor, fromDate, toDate }) {
 
 async function getLastFewEntries({ date }) {
   const getDataQuery =
-    "SELECT uid, farmername, item, vendorname, quantity FROM ENTRY LEFT OUTER JOIN FARMERS ON ENTRY.farmerid = FARMERS.farmerid WHERE date = $1 ORDER BY transactionid desc LIMIT 5 ;";
+    'SELECT uid, farmername, item, vendorname, quantity FROM ENTRY LEFT OUTER JOIN FARMERS ON ENTRY.farmerid = FARMERS.farmerid WHERE date = $1 ORDER BY transactionid desc LIMIT 5 ;';
   return await runQuery(getDataQuery, [date]);
 }
 
@@ -397,7 +397,7 @@ async function updatePaidStatus({
     // perform all the updates in a single query to avoid multiple connections and same timestamp should be registered for all the updates.
     // prepraing the query check if escription has any escape characters like ' or "
     paymentDescription = paymentDescription.replace(/'/g, "''");
-    let updateQuery = "";
+    let updateQuery = '';
     for (const id in update) {
       updateQuery += `UPDATE vendormemo SET paid = ${update[id]}, paiddate = '${today}', paymenttype = '${paymentMode}', paidby = '${paidBy}', description = '${paymentDescription}' WHERE entryid = ${id};`;
     }
@@ -434,21 +434,21 @@ async function getPaymentDetails({ vendor, fromDate, toDate }) {
 
 function sanitizeString(str) {
   try {
-    return str.trim().toLowerCase().replace(/\s+/g, " ");
+    return str.trim().toLowerCase().replace(/\s+/g, ' ');
   } catch (err) {
     console.log(str);
   }
 }
 async function deleteEntry({ transactionId }) {
   try {
-    await runQuery("BEGIN");
+    await runQuery('BEGIN');
     const deleteDataQuery1 = `
 		DELETE FROM vendormemo 
 		WHERE entryid = $1
 		RETURNING *;
 	`;
     const deletedEntry1 = await runQuery(deleteDataQuery1, [transactionId]);
-    console.log("VendorMemo Deleted", deletedEntry1);
+    console.log('VendorMemo Deleted', deletedEntry1);
 
     const deleteDataQuery = `
 		DELETE FROM Entry 
@@ -486,10 +486,10 @@ async function deleteEntry({ transactionId }) {
       paidDate,
     ];
     await runQuery(insertDataQuery, values);
-    await runQuery("COMMIT");
+    await runQuery('COMMIT');
   } catch (err) {
-    console.log("TRANSACTION FAILED", err);
-    await runQuery("ROLLBACK");
+    console.log('TRANSACTION FAILED', err);
+    await runQuery('ROLLBACK');
   }
 }
 
@@ -649,7 +649,7 @@ async function createFarmerAccount({
     sanitizeString(farmerName),
     mobileNumber,
     sanitizeString(farmerAddress),
-    uid || "-----",
+    uid || '-----',
   ];
 
   await runQuery(insertDataQuery, values);
@@ -685,12 +685,12 @@ async function addEntry({
     let values = [
       sanitizeString(farmerName),
       mobileNumber,
-      uid || "-----",
+      uid || '-----',
       farmerAddress,
     ];
 
     const result = await runQuery(insertDataQuery, values);
-    console.log(result, "New Farmer Created");
+    console.log(result, 'New Farmer Created');
     farmerid = result[0].farmerid;
   }
 
@@ -707,7 +707,7 @@ async function addEntry({
     Number(weight),
     date,
   ];
-  console.log(farmerid, "Farmer ID");
+  console.log(farmerid, 'Farmer ID');
   const a = await runQuery(insertDataQuery, values);
   console.log(a);
   return a;
@@ -734,10 +734,10 @@ async function addLateEntry({
 		RETURNING *;
 	  `;
 
-    let values = [sanitizeString(farmerName), mobileNumber, uid || "-----"];
+    let values = [sanitizeString(farmerName), mobileNumber, uid || '-----'];
 
     const result = await runQuery(insertDataQuery, values);
-    console.log(result, "New Farmer Created");
+    console.log(result, 'New Farmer Created');
     farmerid = result[0].farmerid;
   }
 
@@ -756,7 +756,7 @@ async function addLateEntry({
     Number(transportrate),
     true,
   ];
-  console.log(farmerid, "Farmer ID");
+  console.log(farmerid, 'Farmer ID');
   await runQuery(insertDataQuery, values);
 }
 
@@ -844,7 +844,7 @@ async function deleteFarmerAccount({ farmerid, reason }) {
     if (deletedfarmer.length === 0)
       return {
         error:
-          "शेतकऱ्याच्या नोंदी असल्या मुळे, शेतकरी डिलीट होणार नाही. एडिट करा ",
+          'शेतकऱ्याच्या नोंदी असल्या मुळे, शेतकरी डिलीट होणार नाही. एडिट करा ',
       };
     else {
       const insertDataQuery = `
@@ -861,13 +861,13 @@ async function deleteFarmerAccount({ farmerid, reason }) {
         reason,
       ];
       await runQuery(insertDataQuery, values);
-      return "शेतकरी डिलीट केला";
+      return 'शेतकरी डिलीट केला';
     }
   } catch (err) {
     console.log(err);
     return {
       error:
-        "शेतकऱ्याच्या नोंदी असल्या मुळे, शेतकरी डिलीट होणार नाही. एडिट करा ",
+        'शेतकऱ्याच्या नोंदी असल्या मुळे, शेतकरी डिलीट होणार नाही. एडिट करा ',
     };
   }
 }
@@ -879,9 +879,9 @@ async function addAdvance({ farmerid, date, amount, paymentMode }) {
 	VALUES ($1, $2, $3, $4, $5)
 	RETURNING *;
   `;
-  let currentTime = new Date().toLocaleTimeString("en-IN", {
-    hour: "2-digit",
-    minute: "2-digit",
+  let currentTime = new Date().toLocaleTimeString('en-IN', {
+    hour: '2-digit',
+    minute: '2-digit',
   });
   const values = [
     farmerid,
@@ -907,7 +907,7 @@ async function updateAdvancePaidStatus({
   paymentMode,
   paidBy,
 }) {
-  console.log("updating advance");
+  console.log('updating advance');
   try {
     for (const id in update) {
       const updateDataQuery = `UPDATE farmerpayments 
@@ -992,8 +992,8 @@ async function lastLogin({ user_id, device }) {
     VALUES ($1, $2, $3)
     RETURNING *;
   `;
-  const dateTimeString = new Date().toLocaleString("en-IN", {
-    timeZone: "Asia/Kolkata",
+  const dateTimeString = new Date().toLocaleString('en-IN', {
+    timeZone: 'Asia/Kolkata',
   });
 
   const values = [user_id, device, dateTimeString];
@@ -1170,7 +1170,7 @@ async function getAllUsers() {
 }
 
 async function deleteFromRefundTable({ date, vendorName }) {
-  console.log("deleteFromRefundTable", date, vendorName);
+  console.log('deleteFromRefundTable', date, vendorName);
   const deleteDataQuery = `
 	DELETE FROM Refund
 	WHERE date = $1 AND vendorName = $2
@@ -1178,15 +1178,15 @@ async function deleteFromRefundTable({ date, vendorName }) {
 	`;
 
   const del = await runQuery(deleteDataQuery, [date, vendorName]);
-  console.log("deleted", del);
+  console.log('deleted', del);
   // add to deleted refund entries column
   const insertDataQuery = `
 	INSERT INTO deletedRefundData (vendorName, date, value, transporterName, vehicleNo, vmdata, printed, deltedon)
 	VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
 	RETURNING *;
   `;
-  const today = new Date().toLocaleDateString("en-IN", {
-    timeZone: "Asia/Kolkata",
+  const today = new Date().toLocaleDateString('en-IN', {
+    timeZone: 'Asia/Kolkata',
   });
   const values = [
     del[0].vendorname,
@@ -1339,7 +1339,7 @@ GROUP BY
 
 async function setNewUser({ username, password }) {
   const setDataQuery = `INSERT INTO users (username, password, role) VALUES ($1, $2, $3);`;
-  await runQuery(setDataQuery, [username, password, "guest"]);
+  await runQuery(setDataQuery, [username, password, 'guest']);
 }
 
 async function refreshMaterializedView() {

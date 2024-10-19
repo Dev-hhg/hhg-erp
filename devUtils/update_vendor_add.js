@@ -42,15 +42,15 @@
 // updateRefund();
 
 // mark all the entries in refund table for vmdata true where date is less than 2024-01-04
-const runQuery = require("./runquery");
+const runQuery = require('./runquery');
 async function updateRefund() {
-	const updateRefundQuery = `
+  const updateRefundQuery = `
     UPDATE Refund
     SET vmdata = true
     WHERE date < '2024-01-03';
     `;
-	await runQuery(updateRefundQuery);
-	console.log("updated");
+  await runQuery(updateRefundQuery);
+  console.log('updated');
 }
 
 updateRefund();

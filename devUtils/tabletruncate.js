@@ -1,5 +1,5 @@
 // truncate the Entry table
-const runQuery = require("./runquery");
+const runQuery = require('./runquery');
 // function truncateEntryTable() {
 // 	const truncateEntryTableQuery = `
 //     TRUNCATE TABLE VendorMemo;
@@ -20,9 +20,9 @@ const runQuery = require("./runquery");
 //
 
 function copyDbLocally() {
-	const copyDbLocallyQuery = `
+  const copyDbLocallyQuery = `
 	\copy Entry TO 'C:\\Users\\kulde\\OneDrive\\Documents\\DB\\Entry.csv' DELIMITER ',' CSV HEADER;
 `;
-	runQuery(copyDbLocallyQuery);
+  runQuery(copyDbLocallyQuery);
 }
 copyDbLocally();

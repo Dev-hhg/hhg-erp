@@ -1,17 +1,17 @@
-"use client";
-import { useState } from "react";
-import { addVendor } from "@/serverComponents/dbFunctions";
-import Alert from "@/components/Alert";
+'use client';
+import { useState } from 'react';
+import { addVendor } from '@/serverComponents/dbFunctions';
+import Alert from '@/components/Alert';
 export default function Page() {
   const [data, setData] = useState({
-    vendorName: "",
-    mobileNumber: "",
-    galanumber: "",
+    vendorName: '',
+    mobileNumber: '',
+    galanumber: '',
   });
   const [alert, setAlert] = useState({
     state: false,
-    type: "",
-    message: "",
+    type: '',
+    message: '',
   });
   const [loading, setLoading] = useState(false);
   const [submit, setSubmit] = useState(false);
@@ -32,22 +32,22 @@ export default function Page() {
       if (res?.error) throw res.error;
       setAlert({
         state: true,
-        type: "success",
-        message: "Vendor Added Successfully",
+        type: 'success',
+        message: 'Vendor Added Successfully',
       });
     } catch (error) {
       console.log(error);
       setAlert({
         state: true,
-        type: "danger",
+        type: 'danger',
         message: error.toString(),
       });
     } finally {
       setLoading(false);
       setData({
-        vendorName: "",
-        mobileNumber: "",
-        galanumber: "",
+        vendorName: '',
+        mobileNumber: '',
+        galanumber: '',
       });
       setSubmit(false);
     }
@@ -87,7 +87,7 @@ export default function Page() {
         )}
         <form
           onSubmit={handleSubmit}
-          className={`space-y-4 ${loading ? "opacity-20" : ""}`}
+          className={`space-y-4 ${loading ? 'opacity-20' : ''}`}
         >
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
@@ -145,7 +145,7 @@ export default function Page() {
             <button
               type="submit"
               className={`w-full rounded-lg bg-black px-5 py-3 font-medium text-white sm:w-auto  ${
-                submit ? "cursor-not-allowed bg-gray-400" : ""
+                submit ? 'cursor-not-allowed bg-gray-400' : ''
               }`}
               disabled={submit}
             >

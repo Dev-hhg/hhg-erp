@@ -1,7 +1,7 @@
-const runQuery = require("./runquery");
+const runQuery = require('./runquery');
 
 function createVendorTable() {
-	const createTableQuery = `
+  const createTableQuery = `
     CREATE TABLE IF NOT EXISTS Vendor (
     vendorId SERIAL PRIMARY KEY,
     vendorName VARCHAR(30) NOT NULL,
@@ -10,7 +10,7 @@ function createVendorTable() {
     token_no VARCHAR(30) NOT NULL DEFAULT 'NA',
   );
 `;
-	runQuery(createTableQuery);
+  runQuery(createTableQuery);
 }
 
 createVendorTable();

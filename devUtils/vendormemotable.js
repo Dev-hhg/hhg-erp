@@ -1,7 +1,7 @@
-const runQuery = require("./runquery");
+const runQuery = require('./runquery');
 
 function VendorMemo() {
-	const createTableQuery = `
+  const createTableQuery = `
     CREATE TABLE IF NOT EXISTS VendorMemo (
     id SERIAL PRIMARY KEY,
     entryid INT NOT NULL,
@@ -12,7 +12,7 @@ function VendorMemo() {
     paidDate DATE
   );
 `;
-	runQuery(createTableQuery);
+  runQuery(createTableQuery);
 }
 
 VendorMemo();

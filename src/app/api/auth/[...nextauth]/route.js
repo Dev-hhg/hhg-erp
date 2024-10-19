@@ -1,10 +1,10 @@
-import NextAuth from "next-auth/next";
-import CredentialsProvider from "next-auth/providers/credentials";
-import bcrypt from "bcryptjs";
-import { logUser } from "@/serverComponents/dbFunctions";
+import NextAuth from 'next-auth/next';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import bcrypt from 'bcryptjs';
+import { logUser } from '@/serverComponents/dbFunctions';
 
 async function login(credentials) {
-  console.log("credentials", credentials);
+  console.log('credentials', credentials);
   const { username, password } = credentials;
   const res = await logUser({ username: username });
   if (res.length > 0) {
@@ -14,7 +14,7 @@ async function login(credentials) {
     if (!passwordsMatch) {
       return null;
     } else {
-      console.log("User found");
+      console.log('User found');
     }
     return { username: user.username, role: user.role };
   } else {
@@ -25,13 +25,13 @@ async function login(credentials) {
 export const authOptions = {
   providers: [
     CredentialsProvider({
-      name: "credentials",
+      name: 'credentials',
       credentials: {},
       async authorize(credentials) {
         const user = await login(credentials);
 
         if (!user) {
-          throw new Error("User not found");
+          throw new Error('User not found');
         }
         // console.log("user123", user);
         return user;
@@ -39,22 +39,22 @@ export const authOptions = {
     }),
   ],
   session: {
-    strategy: "jwt",
+    strategy: 'jwt',
     maxAge: 1 * 24 * 60 * 60,
   },
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
-    signIn: "/login",
+    signIn: '/login',
   },
   callbacks: {
     async jwt({ token, user }) {
-      console.log("user", user);
+      console.log('user', user);
       if (user) {
-        console.log("user", user);
+        console.log('user', user);
         token.username = user.username;
         token.role = user.role;
       }
-      console.log("token", token);
+      console.log('token', token);
       return token;
     },
     async session({ session, token }) {
@@ -63,7 +63,7 @@ export const authOptions = {
         session.user.role = token.role;
         session.accesstoken = token.jti;
       }
-      console.log("session", session);
+      console.log('session', session);
       return session;
     },
   },

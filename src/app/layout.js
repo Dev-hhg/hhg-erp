@@ -1,20 +1,20 @@
-import { Inter, Noto_Sans } from "next/font/google";
-import Nav from "@/components/Nav";
-import "./globals.css";
-import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/next";
-import { VendorProvider } from "./Context/vendorcontext";
-import PlausibleProvider from "next-plausible";
-import { AuthProvider } from "./Context/Provider";
+import { Inter, Noto_Sans } from 'next/font/google';
+import Nav from '@/components/Nav';
+import './globals.css';
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
+import { VendorProvider } from './Context/vendorcontext';
+import PlausibleProvider from 'next-plausible';
+import { AuthProvider } from './Context/Provider';
 
-const inter = Inter({ subsets: ["latin"] });
-const dev = Noto_Sans({ subsets: ["devanagari"] });
+const inter = Inter({ subsets: ['latin'] });
+const dev = Noto_Sans({ subsets: ['devanagari'] });
 
 export const metadata = {
-  title: "HHG ERP",
-  description: "HHG ERP by kuleep aher",
+  title: 'HHG ERP',
+  description: 'HHG ERP by kuleep aher',
   icons: {
-    icon: "/favicon.ico",
+    icon: '/favicon.ico',
   },
 };
 

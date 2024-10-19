@@ -1,4 +1,4 @@
-const runQuery = require("./runquery");
+const runQuery = require('./runquery');
 function createPaymentTable() {
   const createPaymentTableQuery = `
 CREATE TABLE payment (
