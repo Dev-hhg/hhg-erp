@@ -479,7 +479,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 We expect contributors to adhere to our [Code of Conduct](CODE_OF_CONDUCT.md). Please read the guidelines carefully before making any contributions.
 
-# CONTRIBUTORS
+# Maintainers
 
 - Kuldeep Aher [kuldeepaher01](github.com/kuldeepaher01)
 - Aryan Pokharkar [aryanp86](github.com/aryanp86)
