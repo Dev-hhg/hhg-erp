@@ -1,6 +1,6 @@
 # Linux Bash script (setup.sh)
 #!/bin/bash
-export DATABASE_URL="postgresql://hhg_owner:complex%23password69@localhost:5432/hhg"
+export DATABASE_URL="postgresql://hhg_owner:complex%23password69@localhost:5433/hhg"
 
 # Check if the volume exists
 if [ -z "$(docker volume ls -q -f name=hhg-postgres-data)" ]; then

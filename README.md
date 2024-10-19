@@ -23,8 +23,8 @@ I'm still updating the files and the code.
 - [ ] Add a wiki
 - [ ] Add a project board
 - [ ] Complete the README file
-- [ ] Add a docker config for db
-- [ ] Add a shell script for db setup
+- [x] Add a docker config for db
+- [x] Add a shell script for db setup
 
 
 
