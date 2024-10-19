@@ -1,0 +1,3 @@
+{
+  "database_url": "postgresql://read_only:db/hhg?sslmode=require"
+}
