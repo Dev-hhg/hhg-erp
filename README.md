@@ -449,6 +449,17 @@ To kick things off, make sure your docker container is running:
 ---
 
   
+<!-- Show docs/db_schema.png -->
+
+![Database Schema](docs/db_schema.png)
+
+In the schema above, you can see the database structure for the project. The tables are interconnected to store and manage data efficiently.
+- Orange colored tables are the main tables that store the project's core data.
+- Green colored tables are the tables that store the project's vendors and farmers.
+- Blue colored tables are the tables that store the project's login related data.
+- Black colored tables are miscellaneous tables, which are not directly related to the project's main functionality.
+
+
 
 If you have any questions or need clarification on any features, feel free to reach out. We’re here to help you make valuable contributions!
 
