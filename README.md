@@ -7,27 +7,25 @@ I'm still updating the files and the code.
 - [x] Create a new branch
 - [x] Create a new file
 - [x] Sanitise into english
-- [ ] Complete the README file
 - [x] Add a license
 - [x] Add a code of conduct
 - [x] Add a contributing guideline
 - [x] Add a issue template
-- [ ] Add a pull request template
+- [x] Add a pull request template
 - [x] Add hacktoberfest label
 - [x] Add girlscript label
 - [ ] Open a pull request
+- [x] Add a dependabot
+- [x] Add a vulnerability alert
+- [x] Add a dependabot alert
+- [x] Add a security policy
 - [ ] Merge pull request
 - [ ] Add a wiki
 - [ ] Add a project board
-- [x] Add a security policy
-- [x] Add a dependabot
-- [ ] Add a code scanning
-- [ ] Add a secret scanning
-- [x] Add a vulnerability alert
-- [x] Add a dependabot alert
-- [ ] Add a dependabot security alert
-- [ ] Add a dependabot pull request
-- [ ] Add a dependabot pull request comment
+- [ ] Complete the README file
+- [ ] Add a docker config for db
+- [ ] Add a shell script for db setup
+
 
 
 
