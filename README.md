@@ -133,7 +133,7 @@ docker rm hhg-postgres-container
 
   
 
-Congratulations on you setup! 
+Congratulations on your setup! 
 This application utilizes **NextAuth.js** for authentication using a custom client provider connected to our PostgreSQL database. Here’s everything you need to know to get started:
 
   
@@ -176,7 +176,7 @@ To kick things off, make sure your docker container is running:
 
 - Navigate to the */entry* or */viewentries* routes to see the entries that we setup using the `init.sql` .
 
-- It sets up vendors, farmers, users, entries and refund. Which is enough to get you started. Read the 
+- It sets up vendors, farmers, users, entries and refund. Which is enough to get you started. Read the flow to understand what page does what.
 
   
 
