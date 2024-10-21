@@ -423,9 +423,9 @@ We expect contributors to adhere to our [Code of Conduct](CODE_OF_CONDUCT.md). P
 
 # Maintainers
 
-- Kuldeep Aher [kuldeepaher01](github.com/kuldeepaher01)
-- Aryan Pokharkar [aryanp86](github.com/aryanp86)
-- Siddhesh Patil [siddheshpatil](github.com/siddheshpatil)
+- Kuldeep Aher [kuldeepaher01](https://github.com/kuldeepaher01)
+- Aryan Pokharkar [aryanp86](https://github.com/aryanp-86)
+- Siddhesh Patil [siddheshp27](https://github.com/siddheshp27)
 
 
 
