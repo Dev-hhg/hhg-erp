@@ -1,3 +1,5 @@
+Please contribute 😢
+
 # HHG ERP
 
 This project is an ERP web application designed for middlemen who facilitate the transportation and sale of agricultural produce between farmers and vendors in rural India. The application digitizes traditional manual processes, simplifying the tracking of daily entries, cash flow, and the movement of produce. It uses **Next.js** for the frontend and **PostgreSQL** for the backend to provide a robust platform for managing receipts, inventory, and payments.
@@ -314,6 +316,10 @@ We expect contributors to adhere to our [Code of Conduct](CODE_OF_CONDUCT.md). P
 
 # Maintainers
 
-- Kuldeep Aher [kuldeepaher01](github.com/kuldeepaher01)
-- Aryan Pokharkar [aryanp86](github.com/aryanp86)
-- Siddhesh Patil [siddheshpatil](github.com/siddheshpatil)
+- Kuldeep Aher [kuldeepaher01](https://github.com/kuldeepaher01)
+- Aryan Pokharkar [aryanp86](https://github.com/aryanp-86)
+- Siddhesh Patil [siddheshp27](https://github.com/siddheshp27)
+
+
+
+
