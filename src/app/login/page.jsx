@@ -1,22 +1,22 @@
-"use client";
-import { useState, useEffect, useContext } from "react";
-import { signIn, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { lastLogin, getAllUsers } from "@/serverComponents/dbFunctions";
-import parser from "ua-parser-js";
-import { VendorContext } from "@/app/Context/vendorcontext";
+'use client';
+import { useState, useEffect, useContext } from 'react';
+import { signIn, useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { lastLogin, getAllUsers } from '@/serverComponents/dbFunctions';
+import parser from 'ua-parser-js';
+import { VendorContext } from '@/app/Context/vendorcontext';
 
 function Page() {
   const { data: session, status } = useSession();
   const { setIsLogged } = useContext(VendorContext);
   const router = useRouter();
   const [users, setUsers] = useState([]);
-  const [ip, setIp] = useState("");
-  const [geo, setGeo] = useState("");
+  const [ip, setIp] = useState('');
+  const [geo, setGeo] = useState('');
   const [result, setResult] = useState({});
 
   useEffect(() => {
-    const fetchIP = fetch("https://api.ipify.org?format=json")
+    const fetchIP = fetch('https://api.ipify.org?format=json')
       .then((res) => res.json())
       .then((data) => {
         setIp(data.ip);
@@ -46,47 +46,51 @@ function Page() {
   }, []);
 
   useEffect(() => {
-    if (status === "authenticated") {
+    if (status === 'authenticated') {
       const searchParams = new URLSearchParams(window.location.search);
-      const callbackUrl = searchParams.get("callbackUrl") || "/entry";
-      console.log("Redirecting to:", callbackUrl);
+      const callbackUrl = searchParams.get('callbackUrl') || '/entry';
+      console.log('Redirecting to:', callbackUrl);
       router.push(callbackUrl);
     }
   }, [status, router]);
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (e.target.username.value === "" || e.target.password.value === "") {
-      window.alert("Fields are empty!");
+    if (e.target.username.value === '' || e.target.password.value === '') {
+      window.alert('Fields are empty!');
       return;
     }
     try {
       const searchParams = new URLSearchParams(window.location.search);
-      const callbackUrl = searchParams.get("callbackUrl") || "/entry";
+      const callbackUrl = searchParams.get('callbackUrl') || '/entry';
 
-      console.log("Callback URL before signIn:", callbackUrl);
+      console.log('Callback URL before signIn:', callbackUrl);
 
-      const res = await signIn("credentials", {
+      const res = await signIn('credentials', {
         username: e.target.elements.username.value,
         password: e.target.elements.password.value,
         redirect: false,
         callbackUrl: callbackUrl,
       });
 
-      console.log("SignIn response:", res);
+      console.log('SignIn response:', res);
 
       if (res.error) {
-        window.alert("There was an error signing in!");
+        window.alert('There was an error signing in!');
         return;
       }
 
       const device =
-        result?.device?.type + " " + result?.os?.name + " " + result?.browser?.name;
+        result?.device?.type +
+        ' ' +
+        result?.os?.name +
+        ' ' +
+        result?.browser?.name;
       const date = new Date();
-      const time = date.toLocaleTimeString("en-IN");
+      const time = date.toLocaleTimeString('en-IN');
 
       const devInfo = `${device}, Date: ${date.toLocaleDateString(
-        "en-IN"
+        'en-IN'
       )}, Time: ${time} IP: ${ip}, City: ${geo?.city}, Postal: ${
         geo?.postal
       }, Latitude: ${geo?.latitude}, Longitude: ${geo?.longitude}`;
@@ -96,11 +100,11 @@ function Page() {
         device: devInfo,
       });
 
-      window.alert("Login Successful! Welcome");
+      window.alert('Login Successful! Welcome');
       setIsLogged(true);
 
       // Manual redirection
-      console.log("Manually redirecting to:", callbackUrl);
+      console.log('Manually redirecting to:', callbackUrl);
       router.push(callbackUrl);
     } catch (error) {
       window.alert(error);
@@ -114,16 +118,16 @@ function Page() {
   ));
 
   return (
-    <div className="flex flex-col items-center justify-center m-4">
-      <div className="flex flex-col items-center w-1/2">
-        <h1 className="text-3xl font-bold mb-4 text-white">Login</h1>
+    <div className="m-4 flex flex-col items-center justify-center">
+      <div className="flex w-1/2 flex-col items-center">
+        <h1 className="mb-4 text-3xl font-bold text-white">Login</h1>
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col items-center justify-center w-full"
+          className="flex w-full flex-col items-center justify-center"
         >
           <select
             name="username"
-            className="border-2 border-gray-300 rounded-md px-4 py-2 w-full mb-4"
+            className="mb-4 w-full rounded-md border-2 border-gray-300 px-4 py-2"
             required
           >
             <option value="">Select User</option>
@@ -134,13 +138,13 @@ function Page() {
             type="password"
             placeholder="Password"
             name="password"
-            className="border-2 border-gray-300 rounded-md px-4 py-2 w-full mb-4"
+            className="mb-4 w-full rounded-md border-2 border-gray-300 px-4 py-2"
             required
           />
 
           <button
             type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded-md w-full"
+            className="w-full rounded-md bg-blue-500 px-4 py-2 text-white"
           >
             Login
           </button>

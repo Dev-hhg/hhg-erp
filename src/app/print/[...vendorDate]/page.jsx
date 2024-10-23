@@ -1,13 +1,13 @@
-"use client";
-import { useEffect, useRef, useState, useContext } from "react";
-import generatePDF from "react-to-pdf";
+'use client';
+import { useEffect, useRef, useState, useContext } from 'react';
+import generatePDF from 'react-to-pdf';
 import {
   getEntriesByDateVendor,
   getRefundByDateVendor,
   getGalaNumber,
   updateRefundPrinted,
-} from "@/serverComponents/dbFunctions";
-import { VendorContext } from "@/app/Context/vendorcontext";
+} from '@/serverComponents/dbFunctions';
+import { VendorContext } from '@/app/Context/vendorcontext';
 
 export default function ClientComponent({ params: { vendorDate } }) {
   const { refundData, setRefundData, entriesData, setEntriesData } =
@@ -18,17 +18,17 @@ export default function ClientComponent({ params: { vendorDate } }) {
   const [isLoading, setIsLoading] = useState(true);
   const [print, setPrint] = useState(false);
   const [count, setCount] = useState(0);
-  const [galaNumber, setGalaNumber] = useState("");
+  const [galaNumber, setGalaNumber] = useState('');
 
   const targetRef = useRef();
   const vendor = decodeURIComponent(vendorDate[0]);
   const date = vendorDate[1];
-  const dateArr = date.split("-");
+  const dateArr = date.split('-');
   const formattedDate = `${dateArr[2]}-${dateArr[1]}-${dateArr[0]}`;
   const options = {
-    method: "save",
+    method: 'save',
     page: {
-      format: "A5",
+      format: 'A5',
     },
     filename: `${vendor}${date}`,
   };
@@ -98,17 +98,17 @@ export default function ClientComponent({ params: { vendorDate } }) {
 							<div class=" mt-2 text-lg w-full flex justify-between items-center">
 							<div>
 							Dear Sir, : <span class=" font-semibold">${vendor}</span> <span class="text-xs font-semibold">(${
-							galaNumber || ""
-							})</span>
+                galaNumber || ''
+              })</span>
 													</div>
 													<div class="text-sm font-semibold">दि : ${formattedDate}</div>
 													</div>
 													<div class="mt-1 flex text-xs text-left font-semibold  ">
 													We have sent <span class="font-bold px-1 underline">${totalQuantity}</span> quantity of material <span class="font-bold underline px-1">${
-							refundData[0]?.transportername
-							}</span> in vehicle no. <span class="font-bold px-1 underline">${
-							refundData[0]?.vehicleno
-							}</span> today.
+                            refundData[0]?.transportername
+                          }</span> in vehicle no. <span class="font-bold px-1 underline">${
+                            refundData[0]?.vehicleno
+                          }</span> today.
 							</div>
 							<div class="mt-2 w-full border-b-2 border-gray-500"></div>
 							<table class="w-full divide-y-2 divide-gray-200 bg-white text-sm">
@@ -147,10 +147,10 @@ export default function ClientComponent({ params: { vendorDate } }) {
 							<td colSpan="2" class="whitespace-nowrap text-right py-1 font-semibold text-gray-900"></td>
 							<td class="whitespace-nowrap text-center py-1 font-semibold text-gray-900 ">${totalQuantity}</td>
 							<td class="whitespace-nowrap text-center py-1 font-semibold text-gray-900 ">${totalWeight.toLocaleString(
-                "en-IN"
+                'en-IN'
               )}</td>
 							<td class="whitespace-nowrap text-center  py-1 font-semibold text-gray-900 ">₹ ${totalTransportRate.toLocaleString(
-                "en-IN"
+                'en-IN'
               )}/-</td>
 
 						</tr>
@@ -169,7 +169,7 @@ export default function ClientComponent({ params: { vendorDate } }) {
 								<div class="font-semibold">
 									<label for="refund" class="ml-2 font-medium text-sm text-gray-900 ">Refund :</label>
 									<span class=" text-center   font-semibold text-gray-900  ">₹ ${refundData[0]?.value.toLocaleString(
-                    "en-IN"
+                    'en-IN'
                   )}/-</span>
 								</div>
 								<div class="font-[Noto Sans] my-1">
@@ -177,7 +177,7 @@ export default function ClientComponent({ params: { vendorDate } }) {
 									<span class=" text-center font-semibold text-gray-900  ">₹ ${(
                     Number(totalTransportRate) -
                     Number(refundData[0]?.value || 0)
-                  ).toLocaleString("en-IN")}/-</span>
+                  ).toLocaleString('en-IN')}/-</span>
 								</div>
 							</div>
 							<div class="w-full flex my-1">
@@ -215,9 +215,8 @@ export default function ClientComponent({ params: { vendorDate } }) {
     setPrint(true);
     try {
       updateRefundPrinted({ date, vendor });
-
     } catch (error) {
-      window.alert("Error updating refund printed status");
+      window.alert('Error updating refund printed status');
     }
     // generatePDF(targetRef, options);
     // options.method = "open";
@@ -232,22 +231,22 @@ export default function ClientComponent({ params: { vendorDate } }) {
     const getData = async () => {
       setIsLoading(true);
       if (refundData.length === 0) {
-        console.log("Getting Data from DB");
+        console.log('Getting Data from DB');
         const newdata = await getEntriesByDateVendor({ date, vendor });
         const newRefundData = await getRefundByDateVendor({ date, vendor });
         setRefundData(newRefundData);
-        console.log("Refund Data", newRefundData);
+        console.log('Refund Data', newRefundData);
         setData(newdata);
       } else {
-        console.log("Data already present in context");
-        console.log("Refund Data", refundData);
-        console.log("Entries Data", entriesData);
+        console.log('Data already present in context');
+        console.log('Refund Data', refundData);
+        console.log('Entries Data', entriesData);
         setData(entriesData);
       }
       const newGalaNumber = await getGalaNumber({ vendorName: vendor });
-      console.log("Address", newGalaNumber);
+      console.log('Address', newGalaNumber);
       if (newGalaNumber.length > 0) {
-        console.log("Addresss", newGalaNumber[0].galanumber);
+        console.log('Addresss', newGalaNumber[0].galanumber);
         setGalaNumber(newGalaNumber[0].galanumber);
       }
       setIsLoading(false);
@@ -283,49 +282,49 @@ export default function ClientComponent({ params: { vendorDate } }) {
   const Bill = ({ mypagerow, showTotal, firstPage }) => {
     return (
       <div
-        className={`flex flex-col items-center justify-center  px-10 border-2 border-gray-500 ${
-          !firstPage && showTotal ? "mt-44" : ""
+        className={`flex flex-col items-center justify-center border-2 border-gray-500 px-10 ${
+          !firstPage && showTotal ? 'mt-44' : ''
         }`}
       >
-        <div className=" flex flex-col items-center justify-center  ">
+        <div className="flex flex-col items-center justify-center">
           <div className="">
-            <div className="mt-1 text-xs font-bold flex justify-center">
+            <div className="mt-1 flex justify-center text-xs font-bold">
               ।। श्री हनुमान प्रसन्न ।।
             </div>
-            <div className="mb-1 text-3xl font-black text-red-500 flex justify-center">
+            <div className="mb-1 flex justify-center text-3xl font-black text-red-500">
               HHG Enterprises
             </div>
-            <div className="my-2 xs font-semibold flex justify-center">
-             Pune Maharashtra | 1234567890, 0987654321
+            <div className="xs my-2 flex justify-center font-semibold">
+              Pune Maharashtra | 1234567890, 0987654321
             </div>
-            <div className="my-1 pb-1 text-sm font-black flex justify-center border-gray-500 ">
+            <div className="my-1 flex justify-center border-gray-500 pb-1 text-sm font-black">
               Prop. - Shri. Owner Name
             </div>
           </div>
 
           <div className="w-full border-b-2 border-gray-500"></div>
 
-          <div className="my-1 text-lg w-full flex justify-between items-center">
+          <div className="my-1 flex w-full items-center justify-between text-lg">
             <div>
-              Dear Sir,: <span className=" font-semibold">{vendor}</span>{" "}
+              Dear Sir,: <span className="font-semibold">{vendor}</span>{' '}
               <span className="text-xs font-semibold">
-                {"("}
-                {galaNumber || ""}
-                {")"}
+                {'('}
+                {galaNumber || ''}
+                {')'}
               </span>
             </div>
             <div className="text-sm font-semibold">दि : {formattedDate}</div>
           </div>
 
-          <div className=" mt-1 flex justify-end text-xs text-left font-semibold  ">
-           We have sent{" "}
-            <span className="font-bold px-1 underline">{totalQuantity}</span>
-            quantity item in {" "}
-            <span className="font-bold underline px-1">
+          <div className="mt-1 flex justify-end text-left text-xs font-semibold">
+            We have sent{' '}
+            <span className="px-1 font-bold underline">{totalQuantity}</span>
+            quantity item in{' '}
+            <span className="px-1 font-bold underline">
               {refundData[0]?.transportername}'s
             </span>
-             vehicle no{" "}
-            <span className="font-bold px-1 underline">
+            vehicle no{' '}
+            <span className="px-1 font-bold underline">
               {refundData[0]?.vehicleno}
             </span>
             today.
@@ -336,10 +335,10 @@ export default function ClientComponent({ params: { vendorDate } }) {
             <thead>
               <tr>
                 <th className="whitespace-nowrap px-3 py-1 font-medium text-gray-900">
-                 Sr. No.
+                  Sr. No.
                 </th>
                 <th className="whitespace-nowrap px-3 py-1 font-medium text-gray-900">
-                 Farmer Name
+                  Farmer Name
                 </th>
 
                 <th className="whitespace-nowrap px-3 py-1 font-medium text-gray-900">
@@ -361,74 +360,72 @@ export default function ClientComponent({ params: { vendorDate } }) {
 
               {showTotal && (
                 <tr>
-                  <td className="whitespace-nowrap text-right py-1 font-semibold text-gray-900">
+                  <td className="whitespace-nowrap py-1 text-right font-semibold text-gray-900">
                     Total
                   </td>
                   <td
                     colSpan="2"
-                    className="whitespace-nowrap text-right py-1 font-semibold text-gray-900"
+                    className="whitespace-nowrap py-1 text-right font-semibold text-gray-900"
                   ></td>
-                  <td className="whitespace-nowrap text-center py-1 font-semibold text-gray-900 ">
+                  <td className="whitespace-nowrap py-1 text-center font-semibold text-gray-900">
                     {totalQuantity}
                   </td>
-                  <td className="whitespace-nowrap text-center py-1 font-semibold text-gray-900 ">
+                  <td className="whitespace-nowrap py-1 text-center font-semibold text-gray-900">
                     {totalWeight}
                   </td>
-                  <td className="whitespace-nowrap text-center  py-1 font-semibold text-gray-900 ">
-                    ₹ {totalTransportRate.toLocaleString("en-IN")}/-
+                  <td className="whitespace-nowrap py-1 text-center font-semibold text-gray-900">
+                    ₹ {totalTransportRate.toLocaleString('en-IN')}/-
                   </td>
                 </tr>
               )}
             </tbody>
           </table>
-          {!showTotal && (
-            <div className="text-center mb-2">*PTO </div>
-          )}
+          {!showTotal && <div className="mb-2 text-center">*PTO </div>}
 
           {showTotal && (
             <>
               {refundData[0] && (
-                <div className="w-full flex items-center justify-between mx-10 my-1">
+                <div className="mx-10 my-1 flex w-full items-center justify-between">
                   <div className="font-semibold">
                     <label
                       htmlFor="refund"
-                      className="font-medium text-sm text-gray-900 "
+                      className="text-sm font-medium text-gray-900"
                     >
                       Refund :
                     </label>
-                    <span className=" text-center   font-semibold text-gray-900  ">
-                      ₹ {refundData[0]?.value.toLocaleString("en-IN")}/-
+                    <span className="text-center font-semibold text-gray-900">
+                      ₹ {refundData[0]?.value.toLocaleString('en-IN')}/-
                     </span>
                   </div>
                   <div className="font-[Noto Sans]">
                     <label
                       htmlFor="refund"
-                      className="font-medium text-sm text-gray-900 "
+                      className="text-sm font-medium text-gray-900"
                     >
-                     Nett transport charge :
+                      Nett transport charge :
                     </label>
-                    <span className=" text-center font-semibold text-gray-900  ">
-                      ₹{" "}
+                    <span className="text-center font-semibold text-gray-900">
+                      ₹{' '}
                       {(
                         Number(totalTransportRate) -
                         Number(refundData[0]?.value || 0)
-                      ).toLocaleString("en-IN")}
+                      ).toLocaleString('en-IN')}
                       /-
                     </span>
                   </div>
                 </div>
               )}
-              <div className="w-full flex ">
+              <div className="flex w-full">
                 <div className="w-full border-b-2 border-gray-500"></div>
               </div>
 
-              <div className="flex ">
-                <div className=" text-xs font-semibold  ">
+              <div className="flex">
+                <div className="text-xs font-semibold">
                   Note: If bags are reduced, make a slip from the freight. If
                   there is any discrepancy, do not pay the freight.
                 </div>
-                <div className="my-6 text-sm w-full text-right">
-                For HHG Enterprises
+                <div className="my-6 w-full text-right text-sm">
+                  For HHG Enterprises
                 </div>
               </div>
             </>
@@ -481,13 +478,13 @@ export default function ClientComponent({ params: { vendorDate } }) {
 
   return (
     <div>
-      <div className={`p-14  ${isLoading ? "cursor-wait" : ""}`}>
-        <div className="flex flex-col items-center overflow-x-auto rounded-lg bg-white p-8 shadow-lg lg:col-span-3 ">
+      <div className={`p-14 ${isLoading ? 'cursor-wait' : ''}`}>
+        <div className="flex flex-col items-center overflow-x-auto rounded-lg bg-white p-8 shadow-lg lg:col-span-3">
           {isLoading ? (
             <div className="">
               <svg
                 aria-hidden="true"
-                className="inline w-10 h-10text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                className="h-10text-gray-200 inline w-10 animate-spin fill-blue-600 dark:text-gray-600"
                 viewBox="0 0 100 101"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -505,15 +502,15 @@ export default function ClientComponent({ params: { vendorDate } }) {
           ) : (
             <button
               onClick={downloadPDF}
-              className={`inline-block w-full rounded-lg bg-black px-5 py-3 font-medium text-white sm:w-auto my-5 ${
-                print ? "opacity-50" : ""
+              className={`my-5 inline-block w-full rounded-lg bg-black px-5 py-3 font-medium text-white sm:w-auto ${
+                print ? 'opacity-50' : ''
               }`}
             >
               Print
             </button>
           )}
           <div ref={targetRef}>{allPages}</div>
-          <div className="flex justify-center mt-2"></div>
+          <div className="mt-2 flex justify-center"></div>
         </div>
       </div>
     </div>
@@ -526,23 +523,23 @@ const Row = ({
 }) => {
   return (
     <tr className="">
-      <td className="whitespace-nowrap text-center pb-2 font-medium text-gray-700">
+      <td className="whitespace-nowrap pb-2 text-center font-medium text-gray-700">
         {index + 1}
       </td>
-      <td className="whitespace-nowrap text-center pb-2 text-gray-700">
+      <td className="whitespace-nowrap pb-2 text-center text-gray-700">
         {farmername}
       </td>
 
-      <td className="whitespace-nowrap text-center pb-2 text-gray-700">
+      <td className="whitespace-nowrap pb-2 text-center text-gray-700">
         {item}
       </td>
-      <td className="whitespace-nowrap text-center pb-2 text-gray-700">
+      <td className="whitespace-nowrap pb-2 text-center text-gray-700">
         {quantity}
       </td>
-      <td className="whitespace-nowrap text-center pb-2 text-gray-700">
+      <td className="whitespace-nowrap pb-2 text-center text-gray-700">
         {weight}
       </td>
-      <td className="whitespace-nowrap text-center pb-2 text-gray-700">
+      <td className="whitespace-nowrap pb-2 text-center text-gray-700">
         {transportrate}/-
       </td>
     </tr>

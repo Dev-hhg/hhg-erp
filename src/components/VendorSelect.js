@@ -48,9 +48,13 @@ const VendorSelect = ({ handleChange, value, setLoadingVendors, loading }) => {
       autoFocus
     >
       <option value="" disabled>
-        दलाल
+        Vendor
       </option>
-      {loading ? <option disabled>दलाल लोड करत आहे...</option> : vendorOptions}
+      {loading ? (
+        <option disabled>Vendors are loading...</option>
+      ) : (
+        vendorOptions
+      )}
     </select>
   );
 };

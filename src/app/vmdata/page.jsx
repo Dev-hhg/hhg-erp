@@ -1,15 +1,15 @@
-"use client";
-import { useEffect, useState, useContext } from "react";
+'use client';
+import { useEffect, useState, useContext } from 'react';
 import {
   getRefundVmData,
   deleteFromRefundTable,
   setRefundMarked,
-} from "@/serverComponents/dbFunctions";
-import VendorSelect from "@/components/VendorSelect";
-import Alert from "@/components/Alert";
-import { VendorContext } from "../Context/vendorcontext";
-import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
+} from '@/serverComponents/dbFunctions';
+import VendorSelect from '@/components/VendorSelect';
+import Alert from '@/components/Alert';
+import { VendorContext } from '../Context/vendorcontext';
+import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 export default function Page() {
   const { data: session, status } = useSession();
@@ -19,9 +19,6 @@ export default function Page() {
   const [data, setData] = useState(null);
   const [clicked, setClicked] = useState(false);
   const [loading, setLoading] = useState(true);
-
-
-  
 
   useEffect(() => {
     async function getData() {
@@ -34,82 +31,83 @@ export default function Page() {
     getData();
   }, []);
 
-  if(status === "authenticated")
-    {
-      console.log("Session", session);
-      if(session?.user?.role === "guest"){
-        return (
-          <div className="flex justify-center items-center h-screen">
-            <h1 className="text-3xl text-white">You are not authorized to view this page :)</h1>
-          </div>
-        );
-      }
+  if (status === 'authenticated') {
+    console.log('Session', session);
+    if (session?.user?.role === 'guest') {
+      return (
+        <div className="flex h-screen items-center justify-center">
+          <h1 className="text-3xl text-white">
+            You are not authorized to view this page :)
+          </h1>
+        </div>
+      );
     }
+  }
 
   function handleRowClick(vendorname, date) {
-    console.log("Row clicked", vendorname, date);
+    console.log('Row clicked', vendorname, date);
     var dateObj = new Date(date);
 
-    var day = String(dateObj.getDate()).padStart(2, "0"); // Ensures two digits
-    var month = String(dateObj.getMonth() + 1).padStart(2, "0"); // Months are zer
+    var day = String(dateObj.getDate()).padStart(2, '0'); // Ensures two digits
+    var month = String(dateObj.getMonth() + 1).padStart(2, '0'); // Months are zer
     var year = dateObj.getFullYear();
 
     // Format the date as DD-MM-YYYY
     var formattedDate = `${year}-${month}-${day}`;
 
     console.log(formattedDate); // Outputs: "05-02-2024"
-    console.log("Redirecting to ", vendorname, formattedDate);
+    console.log('Redirecting to ', vendorname, formattedDate);
     setSelectedVMNDate({
       vendorname: vendorname,
       date: formattedDate,
     });
-    router.push("/vendorMemo");
+    router.push('/vendorMemo');
     // redirectTovm();
   }
   function handleMarkedClick(vendorname, date) {
-    console.log("Marked clicked", vendorname, date);
+    console.log('Marked clicked', vendorname, date);
     setRefundMarked({ vendorName: vendorname, date: date })
       .then((res) => {
         console.log(res);
         setAlert({
           state: true,
-          message: "Marked Successfully",
-          type: "success",
+          message: 'Marked Successfully',
+          type: 'success',
         });
-		// refresh the page
-		// window.location.reload();
-		// remove the entry from the data
-		const newData = data.filter(
-		  (entry) => entry.vendorname !== vendorname || entry.date !== date
-		);
-		setData(newData);
+        // refresh the page
+        // window.location.reload();
+        // remove the entry from the data
+        const newData = data.filter(
+          (entry) => entry.vendorname !== vendorname || entry.date !== date
+        );
+        setData(newData);
       })
       .catch((err) => {
         console.log(err);
         setAlert({
           state: true,
-          message: "Failed to mark",
-          type: "error",
+          message: 'Failed to mark',
+          type: 'error',
         });
         setClicked(false);
       });
   }
 
   function handleDeleteClick(vendorname, date) {
-    console.log("Delete clicked", vendorname, date);
+    console.log('Delete clicked', vendorname, date);
     setClicked(true);
     // prompt for confirmation
-    if (window.confirm("Are you sure you want to delete?")) {
+    if (window.confirm('Are you sure you want to delete?')) {
       deleteFromRefundTable({ vendorName: vendorname, date: date })
         .then((res) => {
           console.log(res);
           setAlert({
             state: true,
-            message: "Deleted Successfully",
-            type: "success",
+            message: 'Deleted Successfully',
+            type: 'success',
           });
           setClicked(false);
-          window.alert("Deleted Successfully");
+          window.alert('Deleted Successfully');
           // remove the entry from the data
           const newData = data.filter(
             (entry) => entry.vendorname !== vendorname || entry.date !== date
@@ -120,8 +118,8 @@ export default function Page() {
           console.log(err);
           setAlert({
             state: true,
-            message: "Failed to delete",
-            type: "error",
+            message: 'Failed to delete',
+            type: 'error',
           });
           setClicked(false);
         });
@@ -139,10 +137,10 @@ export default function Page() {
         />
       )}
       {loading && (
-        <div className="absolute -translate-x-1/2 -translate-y-1/2 top-2/4 left-1/2">
+        <div className="absolute left-1/2 top-2/4 -translate-x-1/2 -translate-y-1/2">
           <svg
             aria-hidden="true"
-            className="inline w-10 h-10text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+            className="h-10text-gray-200 inline w-10 animate-spin fill-blue-600 dark:text-gray-600"
             viewBox="0 0 100 101"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -159,39 +157,41 @@ export default function Page() {
         </div>
       )}
 
-      <div className=" overflow-x-auto rounded-lg bg-white p-8 shadow-lg lg:col-span-3 lg:p-8 ">
+      <div className="overflow-x-auto rounded-lg bg-white p-8 shadow-lg lg:col-span-3 lg:p-8">
         <div className="flex flex-row justify-center space-x-4">
-          <h1 className="text-3xl font-bold text-center">बाकी मुंबई मेमो</h1>
+          <h1 className="text-center text-3xl font-bold">
+            Remaining Vendor Memos
+          </h1>
           <button
-            onClick={() => router.push("/vendorMemo")}
+            onClick={() => router.push('/vendorMemo')}
             className="inline-block w-full rounded-lg bg-black px-5 py-3 font-medium text-white sm:w-auto"
             disabled={loading}
           >
-            Memo वर जा
+            Go to Mumbai Memo
           </button>
         </div>
 
-        <h4 className="mt-2 text-xl text-center">
+        <h4 className="mt-2 text-center text-xl">
           Remaining Mumbai Memo: {data && data.length}
         </h4>
         <div className="flex justify-center">
-          <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm mt-5 ">
+          <table className="mt-5 min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
             <thead className="">
               <tr className="bg-gray-300">
-                <th className="whitespace-nowrap px-1 md:px-12 lg:px-12 py-2 font-bold text-gray-900">
-                 Sr. No.
+                <th className="whitespace-nowrap px-1 py-2 font-bold text-gray-900 md:px-12 lg:px-12">
+                  Sr. No.
                 </th>
-                <th className="whitespace-nowrap px-1 md:px-12 lg:px-12 py-2 font-bold text-gray-900">
+                <th className="whitespace-nowrap px-1 py-2 font-bold text-gray-900 md:px-12 lg:px-12">
                   Vendor Name
                 </th>
-                <th className="whitespace-nowrap px-1 md:px-12 lg:px-12 py-2 font-bold text-gray-900">
+                <th className="whitespace-nowrap px-1 py-2 font-bold text-gray-900 md:px-12 lg:px-12">
                   Transport Date
                 </th>
-                <th className="whitespace-nowrap px-1 md:px-12 lg:px-12 py-2 font-bold text-gray-900">
+                <th className="whitespace-nowrap px-1 py-2 font-bold text-gray-900 md:px-12 lg:px-12">
                   Transporter name
                 </th>
-                <th className="whitespace-nowrap px-1 md:px-12 lg:px-12 py-2 font-bold text-gray-900">
-                Delete | Mark as Done
+                <th className="whitespace-nowrap px-1 py-2 font-bold text-gray-900 md:px-12 lg:px-12">
+                  Delete | Mark as Done
                 </th>
               </tr>
             </thead>
@@ -200,28 +200,28 @@ export default function Page() {
                 data.map((entry, index) => (
                   <tr
                     key={index + 1}
-                    className="cursor-pointer hover:bg-gray-100 transition-all ease-in-out duration-200"
+                    className="cursor-pointer transition-all duration-200 ease-in-out hover:bg-gray-100"
                     onClick={(e) => {
                       e.preventDefault();
                       handleRowClick(entry.vendorname, entry.date);
                     }}
                   >
-                    <td className="whitespace-nowrap text-center py-2 text-gray-700">
+                    <td className="whitespace-nowrap py-2 text-center text-gray-700">
                       {index + 1}
                     </td>
-                    <td className="whitespace-nowrap text-center font-bold py-2 text-gray-700">
+                    <td className="whitespace-nowrap py-2 text-center font-bold text-gray-700">
                       {entry.vendorname}
                     </td>
-                    <td className="whitespace-nowrap text-center py-2 font-semibold text-gray-700">
-                      {entry.date.toLocaleDateString("en-IN")}
+                    <td className="whitespace-nowrap py-2 text-center font-semibold text-gray-700">
+                      {entry.date.toLocaleDateString('en-IN')}
                     </td>
 
-                    <td className="whitespace-nowrap text-center py-2 text-gray-700">
+                    <td className="whitespace-nowrap py-2 text-center text-gray-700">
                       {entry.transportername}
                     </td>
-                    <td className="whitespace-nowrap text-center py-2 text-gray-700">
+                    <td className="whitespace-nowrap py-2 text-center text-gray-700">
                       <button
-                        className="bg-red-500 text-white px-3 py-1 rounded-lg"
+                        className="rounded-lg bg-red-500 px-3 py-1 text-white"
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
@@ -229,7 +229,7 @@ export default function Page() {
                         }}
                       >
                         <svg
-                          className="w-4 h-4 text-gray-800 dark:text-white"
+                          className="h-4 w-4 text-gray-800 dark:text-white"
                           aria-hidden="true"
                           xmlns="http://www.w3.org/2000/svg"
                           fill="currentColor"
@@ -239,7 +239,7 @@ export default function Page() {
                         </svg>
                       </button>
                       <button
-                        className="bg-green-500 text-white px-3 py-1 rounded-lg ml-2"
+                        className="ml-2 rounded-lg bg-green-500 px-3 py-1 text-white"
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
@@ -247,7 +247,7 @@ export default function Page() {
                         }}
                       >
                         <svg
-                          class="w-4 h-4 text-gray-800 dark:text-white"
+                          className="h-4 w-4 text-gray-800 dark:text-white"
                           aria-hidden="true"
                           xmlns="http://www.w3.org/2000/svg"
                           width="24"
@@ -257,9 +257,9 @@ export default function Page() {
                         >
                           <path
                             stroke="currentColor"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
                             d="M5 11.917 9.724 16.5 19 7.5"
                           />
                         </svg>

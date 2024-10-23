@@ -1,13 +1,13 @@
 'use client';
-import React, { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
+import React, { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
 import {
   addAdvance,
   getAdvanceDetails,
   getFarmers,
-} from "@/serverComponents/dbFunctions";
-import DateSection from "@/components/DateSection";
-import Alert from "@/components/Alert";
+} from '@/serverComponents/dbFunctions';
+import DateSection from '@/components/DateSection';
+import Alert from '@/components/Alert';
 
 export default function Page() {
   const [farmers, setFarmers] = useState([]);
@@ -16,18 +16,18 @@ export default function Page() {
 
   const [alert, setAlert] = useState({
     state: false,
-    type: "",
-    message: "",
+    type: '',
+    message: '',
   });
   const [loading, setLoading] = useState(false);
-  const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
+  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
   const [data, setData] = useState({
-    farmerName: "",
-    uid: "",
-    farmerid: "",
-    amount: "",
-    paymentMode: "",
-    date: "",
+    farmerName: '',
+    uid: '',
+    farmerid: '',
+    amount: '',
+    paymentMode: '',
+    date: '',
   });
   const [recentData, setRecentData] = useState([]);
   const [submit, setSubmit] = useState(false);
@@ -40,18 +40,18 @@ export default function Page() {
     const getFarmerDetails = async () => {
       try {
         const tempFarmers = await getFarmers();
-        localStorage.setItem("farmers", JSON.stringify(tempFarmers));
+        localStorage.setItem('farmers', JSON.stringify(tempFarmers));
         setFarmers(tempFarmers);
       } catch (error) {
         setAlert({
           state: true,
-          type: "danger",
+          type: 'danger',
           message: error.toString(),
         });
       }
     };
 
-    const storageFarmers = localStorage.getItem("farmers");
+    const storageFarmers = localStorage.getItem('farmers');
     if (storageFarmers) {
       setFarmers(JSON.parse(storageFarmers));
     } else {
@@ -70,7 +70,7 @@ export default function Page() {
         } catch (error) {
           setAlert({
             state: true,
-            type: "danger",
+            type: 'danger',
             message: error.toString(),
           });
         }
@@ -85,11 +85,11 @@ export default function Page() {
     setSubmit(true);
     setData((prev) => ({ ...prev, date }));
 
-    if (data.uid.length !== 5 && data.uid !== "") {
+    if (data.uid.length !== 5 && data.uid !== '') {
       setAlert({
         state: true,
-        type: "danger",
-        message: "UID should be 5 digits",
+        type: 'danger',
+        message: 'UID should be 5 digits',
       });
       setLoading(false);
       return;
@@ -100,14 +100,14 @@ export default function Page() {
       if (res?.error) throw res.error;
       setAlert({
         state: true,
-        type: "success",
-        message: "Advance added successfully",
+        type: 'success',
+        message: 'Advance added successfully',
       });
       resetForm();
     } catch (error) {
       setAlert({
         state: true,
-        type: "danger",
+        type: 'danger',
         message: error.toString(),
       });
     } finally {
@@ -117,14 +117,14 @@ export default function Page() {
 
   const resetForm = () => {
     setData({
-      farmerName: "",
-      uid: "",
-      farmerid: "",
-      amount: "",
-      paymentMode: "",
-      date: "",
+      farmerName: '',
+      uid: '',
+      farmerid: '',
+      amount: '',
+      paymentMode: '',
+      date: '',
     });
-    setDate(new Date().toISOString().split("T")[0]);
+    setDate(new Date().toISOString().split('T')[0]);
     setIsDisabledInput({
       farmerName: false,
       uid: false,
@@ -136,13 +136,13 @@ export default function Page() {
     const { name, value } = e.target;
     setData((prev) => ({ ...prev, [name]: value, date }));
 
-    if (name === "farmerName") {
+    if (name === 'farmerName') {
       searchFarmers(value);
     }
   };
 
   const searchFarmers = (query) => {
-    if (query.trim() === "") {
+    if (query.trim() === '') {
       setSearchedFarmers([]);
     } else {
       const filtered = farmers.filter((farmer) =>
@@ -164,7 +164,7 @@ export default function Page() {
   };
 
   const handleSearchByUid = async () => {
-    if (data.uid.length === 5 && data.uid !== "00000") {
+    if (data.uid.length === 5 && data.uid !== '00000') {
       const entry = farmers.find((farmer) => farmer.uid === data.uid);
       if (entry) {
         setData((prev) => ({
@@ -177,10 +177,15 @@ export default function Page() {
     }
   };
 
-  if (status === "authenticated" && (session?.user?.role === "guest" || session?.user?.role === "user")) {
+  if (
+    status === 'authenticated' &&
+    (session?.user?.role === 'guest' || session?.user?.role === 'user')
+  ) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <h1 className="text-3xl text-white">You are not authorized to view this page</h1>
+      <div className="flex h-screen items-center justify-center">
+        <h1 className="text-3xl text-white">
+          You are not authorized to view this page
+        </h1>
       </div>
     );
   }
@@ -209,8 +214,8 @@ export default function Page() {
         </div>
         <div className="flex space-x-4">
           <div className="w-full md:w-1/2 lg:w-1/2">
-            <form onSubmit={handleSubmit} className="mt-4 space-y-4 w-full">
-              <h1 className="text-2xl align-middle font-bold text-center whitespace-nowrap">
+            <form onSubmit={handleSubmit} className="mt-4 w-full space-y-4">
+              <h1 className="whitespace-nowrap text-center align-middle text-2xl font-bold">
                 Farmer Advance
               </h1>
 
@@ -220,7 +225,7 @@ export default function Page() {
                 </label>
                 <input
                   autoComplete="off"
-                  className="w-full rounded-lg border-gray-200 p-3 text-sm e-disable"
+                  className="e-disable w-full rounded-lg border-gray-200 p-3 text-sm"
                   placeholder="5 digit UID"
                   type="number"
                   id="uid"
@@ -234,11 +239,11 @@ export default function Page() {
               </div>
               <div className="relative">
                 <label className="sr-only" htmlFor="farmerName">
-                farmerName
+                  farmerName
                 </label>
                 <input
                   autoComplete="off"
-                  className="w-full rounded-lg border-gray-200 p-3 text-sm e-disable"
+                  className="e-disable w-full rounded-lg border-gray-200 p-3 text-sm"
                   placeholder="farmerName"
                   type="text"
                   id="farmerName"
@@ -249,11 +254,11 @@ export default function Page() {
                   required
                 />
                 {searchedFarmers.length > 0 && (
-                  <ul className="absolute z-10 w-full bg-white border border-gray-300 mt-1 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                  <ul className="absolute z-10 mt-1 max-h-60 w-full overflow-y-auto rounded-lg border border-gray-300 bg-white shadow-lg">
                     {searchedFarmers.map((farmer) => (
                       <li
                         key={farmer.farmerid}
-                        className="p-2 hover:bg-gray-100 cursor-pointer"
+                        className="cursor-pointer p-2 hover:bg-gray-100"
                         onClick={() => handleFarmerSelect(farmer)}
                       >
                         {farmer.farmername}
@@ -297,7 +302,7 @@ export default function Page() {
                 <button
                   type="submit"
                   className={`w-full rounded-lg bg-black px-5 py-3 font-medium text-white sm:w-auto ${
-                    submit ? "cursor-not-allowed bg-gray-400" : ""
+                    submit ? 'cursor-not-allowed bg-gray-400' : ''
                   }`}
                   disabled={submit}
                 >
@@ -308,26 +313,26 @@ export default function Page() {
           </div>
 
           {/* Recent entries table */}
-          <div className="mt-4 w-1/2 lg:w-1/2 hidden md:block lg:block">
-            <h1 className="text-2xl align-middle font-bold text-center whitespace-nowrap">
+          <div className="mt-4 hidden w-1/2 md:block lg:block lg:w-1/2">
+            <h1 className="whitespace-nowrap text-center align-middle text-2xl font-bold">
               Recent Entries
             </h1>
-            <table className="justify-center divide-y divide-gray-900 bg-white md:text-sm mt-5 text-xs border border-gray-900 w-full">
+            <table className="mt-5 w-full justify-center divide-y divide-gray-900 border border-gray-900 bg-white text-xs md:text-sm">
               <thead>
                 <tr>
-                  <th className="whitespace-nowrap px-1 md:px-4 py-2 font-bold text-gray-900">
+                  <th className="whitespace-nowrap px-1 py-2 font-bold text-gray-900 md:px-4">
                     Sr. No.
                   </th>
-                  <th className="whitespace-nowrap px-1 md:px-4 py-2 font-bold text-gray-900">
+                  <th className="whitespace-nowrap px-1 py-2 font-bold text-gray-900 md:px-4">
                     Amount
                   </th>
-                  <th className="whitespace-nowrap px-1 md:px-4 py-2 font-bold text-gray-900">
-                   Description
+                  <th className="whitespace-nowrap px-1 py-2 font-bold text-gray-900 md:px-4">
+                    Description
                   </th>
-                  <th className="whitespace-nowrap px-1 md:px-4 py-2 font-bold text-gray-900">
+                  <th className="whitespace-nowrap px-1 py-2 font-bold text-gray-900 md:px-4">
                     Date
                   </th>
-                  <th className="whitespace-nowrap px-1 md:px-4 py-2 font-bold text-gray-900">
+                  <th className="whitespace-nowrap px-1 py-2 font-bold text-gray-900 md:px-4">
                     Time
                   </th>
                 </tr>
@@ -335,19 +340,19 @@ export default function Page() {
               <tbody className="divide-y divide-gray-200">
                 {recentData.map((entry, index) => (
                   <tr key={index}>
-                    <td className="whitespace-nowrap text-center py-2 text-gray-700">
+                    <td className="whitespace-nowrap py-2 text-center text-gray-700">
                       {index + 1}
                     </td>
-                    <td className="whitespace-nowrap text-center py-2 text-gray-700">
-                      ₹{entry.amount.toLocaleString("en-IN")}/-
+                    <td className="whitespace-nowrap py-2 text-center text-gray-700">
+                      ₹{entry.amount.toLocaleString('en-IN')}/-
                     </td>
-                    <td className="whitespace-nowrap text-center py-2 text-gray-700">
+                    <td className="whitespace-nowrap py-2 text-center text-gray-700">
                       {entry.description}
                     </td>
-                    <td className="whitespace-nowrap text-center py-2 text-gray-700">
-                      {new Date(entry.date).toLocaleDateString("en-IN")}
+                    <td className="whitespace-nowrap py-2 text-center text-gray-700">
+                      {new Date(entry.date).toLocaleDateString('en-IN')}
                     </td>
-                    <td className="whitespace-nowrap text-center py-2 text-gray-700">
+                    <td className="whitespace-nowrap py-2 text-center text-gray-700">
                       {entry.time}
                     </td>
                   </tr>

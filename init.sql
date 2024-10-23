@@ -375,13 +375,13 @@ VALUES
 
 INSERT INTO public.vendor (vendorname, mobilenumber, galanumber, token_no, vendornameshort, vendorpriority) 
 VALUES
-('Sakharam Vishnu Shinde', '9876543210', 'Shop No. 12, Market Street', '1234', 'SVS', 1),
-('Anita Dinesh Patil', '8765432109', 'Shop No. 45, Central Market', '5678', 'ADP', 2),
-('Manoj Suresh Kale', '7654321098', 'Shop No. 30, Bazaar Road', '2345', 'MSK', 3),
-('Ravi Ramchandra Jadhav', '6543210987', 'Shop No. 18, Main Road', '3456', 'RRJ', 4),
-('Priya Mahesh Desai', '5432109876', 'Shop No. 7, High Street', '7890', 'PMD', 5),
-('Rajesh Vinayak Pawar', '4321098765', 'Shop No. 21, Market Lane', '9012', 'RVP', 6),
-('Sunita Harish Joshi', '3210987654', 'Shop No. 54, North Avenue', '6789', 'SHJ', 7);
+('sakharam vishnu shinde', '9876543210', 'Shop No. 12, Market Street', '1234', 'SVS', 1),
+('anita dinesh patil', '8765432109', 'Shop No. 45, Central Market', '5678', 'ADP', 2),
+('manoj suresh kale', '7654321098', 'Shop No. 30, Bazaar Road', '2345', 'MSK', 3),
+('ravi ramchandra jadhav', '6543210987', 'Shop No. 18, Main Road', '3456', 'RRJ', 4),
+('priya mahesh desai', '5432109876', 'Shop No. 7, High Street', '7890', 'PMD', 5),
+('rajesh vinayak pawar', '4321098765', 'Shop No. 21, Market Lane', '9012', 'RVP', 6),
+('sunita harish joshi', '3210987654', 'Shop No. 54, North Avenue', '6789', 'SHJ', 7);
 
 INSERT INTO public.farmers (farmername, uid, mobilenumber, farmeraddress, status) 
 VALUES

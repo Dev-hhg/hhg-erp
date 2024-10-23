@@ -1,43 +1,39 @@
-"use client";
-import { useEffect, useState } from "react";
-import DateSection from "@/components/DateSection";
-import QRScan from "@/components/QRScan";
-import Modal from "@/components/Modal";
-import { set } from "react-hook-form";
-import {getSetEntryScan} from "@/serverComponents/dbFunctions";
+'use client';
+import { useEffect, useState } from 'react';
+import DateSection from '@/components/DateSection';
+import QRScan from '@/components/QRScan';
+import Modal from '@/components/Modal';
+import { set } from 'react-hook-form';
+import { getSetEntryScan } from '@/serverComponents/dbFunctions';
 
 function Page() {
   const [modalOpen, setModalOpen] = useState(false);
-  const [decodedText, setDecodedText] = useState("");
-  const [previousDecodedText, setPreviousDecodedText] = useState("");
+  const [decodedText, setDecodedText] = useState('');
+  const [previousDecodedText, setPreviousDecodedText] = useState('');
   const [scannedBags, setScannedBags] = useState([]);
   const [duplicate, setDuplicate] = useState(false);
   const [dataBaseEntry, setDataBaseEntry] = useState([]); // [bag1, bag2, bag3, ...
   let lastScannedText = [];
 
   const onNewScanResult = (txt, decodedResult) => {
-    console.log("Values in scanned bags", scannedBags);
+    console.log('Values in scanned bags', scannedBags);
     setDecodedText(txt);
   };
 
   // Effect hook to perform actions based on the updated previousDecodedText
   useEffect(() => {
-    console.log("scannedBags", scannedBags);
-    if (
-      decodedText !== null &&
-      decodedText !== ""
-    ) {
+    console.log('scannedBags', scannedBags);
+    if (decodedText !== null && decodedText !== '') {
       if (scannedBags.indexOf(decodedText) === -1) {
-        console.log("New scanned");
+        console.log('New scanned');
         setPreviousDecodedText(decodedText); // Schedule an update to previousDecodedText
         lastScannedText.push(decodedText);
         setModalOpen(true);
       } else {
-        console.log("Duplicate QR code scanned");
+        console.log('Duplicate QR code scanned');
         setDuplicate(true);
       }
     }
-
   }, [decodedText]);
 
   const closeModal = () => {
@@ -47,12 +43,12 @@ function Page() {
   const handleOk = () => {
     setScannedBags((prev) => [...prev, decodedText]);
     // getSetEntryScan(decodedText);
-    
+
     async function setEntryScan() {
-        const temp = await getSetEntryScan(decodedText);
-        console.log("temp", temp);
-        
-        setDataBaseEntry(temp);
+      const temp = await getSetEntryScan(decodedText);
+      console.log('temp', temp);
+
+      setDataBaseEntry(temp);
     }
     setEntryScan();
 
@@ -61,9 +57,9 @@ function Page() {
 
   const handleCancel = () => {
     setDuplicate(false);
-    console.log("lastScannedTextP", lastScannedText);
+    console.log('lastScannedTextP', lastScannedText);
     lastScannedText.pop();
-    console.log("lastScannedTextA", lastScannedText);
+    console.log('lastScannedTextA', lastScannedText);
     closeModal();
   };
 
@@ -78,24 +74,24 @@ function Page() {
   };
 
   return (
-    <div className="p-2 flex flex-col items-start h-screen">
+    <div className="flex h-screen flex-col items-start p-2">
       <div>
         <div className="">
           <div className="text-white">
-            Go{" "}
+            Go{' '}
             <a href="/entry" className="text-blue-600">
               Home
             </a>
           </div>
         </div>
         <div className="text-white">
-          Now scanned: <span className=" text-green-600">{decodedText}</span>
+          Now scanned: <span className="text-green-600">{decodedText}</span>
         </div>
         {duplicate && (
           <div className="text-red-600">Duplicate QR code scanned</div>
         )}
       </div>
-      <div className="m-2 max-w-full max-h-full">
+      <div className="m-2 max-h-full max-w-full">
         <QRScan
           className="p-10"
           fps={1}

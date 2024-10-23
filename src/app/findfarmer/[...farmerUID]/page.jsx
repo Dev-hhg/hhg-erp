@@ -1,5 +1,5 @@
-"use client";
-import Alert from "@/components/Alert";
+'use client';
+import Alert from '@/components/Alert';
 import {
   updatePaidStatus,
   getFarmerUsingUid,
@@ -7,12 +7,12 @@ import {
   updateAdvancePaidStatus,
   getFarmersALlData,
   getFarmers,
-} from "@/serverComponents/dbFunctions";
-import { useState, useEffect } from "react";
-import { useSession } from "next-auth/react";
-import { set } from "react-hook-form";
-import SaveMenu from "@/components/SaveMenu";
-import Loader from "@/components/Loader";
+} from '@/serverComponents/dbFunctions';
+import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
+import { set } from 'react-hook-form';
+import SaveMenu from '@/components/SaveMenu';
+import Loader from '@/components/Loader';
 
 export default function ClientComponent({ params: { farmerUID } }) {
   const { data: session, status } = useSession();
@@ -24,35 +24,35 @@ export default function ClientComponent({ params: { farmerUID } }) {
       // console.log("Fetching Farmers From DB");
       const tempfarmers = await getFarmers();
       // console.log("Farmers", tempfarmers);
-      localStorage.setItem("farmers", JSON.stringify(tempfarmers));
+      localStorage.setItem('farmers', JSON.stringify(tempfarmers));
       setFarmers(tempfarmers);
       return tempfarmers;
     } catch (error) {
       setAlert({
         state: true,
-        type: "danger",
+        type: 'danger',
         message: error,
       });
     }
   };
 
   useEffect(() => {
-    if (status === "authenticated") {
-      console.log("Session", session?.user?.role);
-      if (session?.user?.role === "guest" || session?.user?.role === "user") {
+    if (status === 'authenticated') {
+      console.log('Session', session?.user?.role);
+      if (session?.user?.role === 'guest' || session?.user?.role === 'user') {
         // window.alert("आपण पट्टी पेड नाही करू शकत ");
-        console.log("You are not allowed to access this page");
+        console.log('You are not allowed to access this page');
         setAllowed(false);
         // console.log("You are  allowed to access this page");
       } else {
         setAllowed(true);
-        console.log("You are  allowed to access this page");
+        console.log('You are  allowed to access this page');
       }
     }
   }, [status, session]);
 
   useEffect(() => {
-    const storageFarmers = localStorage.getItem("farmers");
+    const storageFarmers = localStorage.getItem('farmers');
     // console.log("Storage Farmers", Boolean(storageFarmers));
 
     if (!Boolean(storageFarmers)) {
@@ -61,19 +61,19 @@ export default function ClientComponent({ params: { farmerUID } }) {
     } else {
       // console.log("Farmers data exist" + storageFarmers);
       setFarmers(JSON.parse(storageFarmers));
-      return () => console.log("Farmers data exist", farmers);
+      return () => console.log('Farmers data exist', farmers);
     }
   }, []);
 
   // STATES AND VARIABLES DECLARATION STARTS HERE /////////////////////////////////////////
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [entries, setEntries] = useState([]);
 
   const [sumOfChecked, setSumOfChecked] = useState(0.0);
   const [alert, setAlert] = useState({
     state: false,
-    type: "",
-    message: "",
+    type: '',
+    message: '',
   });
   const [loading, setLoading] = useState(false);
 
@@ -84,10 +84,10 @@ export default function ClientComponent({ params: { farmerUID } }) {
   const [paidAmt, setPaidAmt] = useState(0);
   const [toPayAmt, setToPayAmt] = useState(0);
 
-  const [uid, setUid] = useState("");
-  const [mobileNo, setMobileNo] = useState("");
-  const [farmername, setFarmerName] = useState("");
-  const [farmerMobileNo, setFarmerMobileNo] = useState("");
+  const [uid, setUid] = useState('');
+  const [mobileNo, setMobileNo] = useState('');
+  const [farmername, setFarmerName] = useState('');
+  const [farmerMobileNo, setFarmerMobileNo] = useState('');
 
   const [advanceUpdates, setAdvanceUpdates] = useState({});
   const [advanceStatus, setAdvanceStatus] = useState({});
@@ -98,19 +98,19 @@ export default function ClientComponent({ params: { farmerUID } }) {
 
   const [print, setPrint] = useState(false);
 
-  const today = new Date().toISOString().split("T")[0];
+  const today = new Date().toISOString().split('T')[0];
   const id = farmerUID[0];
   const [submit, setSubmit] = useState(false);
 
   const [openSaveMenu, setOpenSaveMenu] = useState(false);
-  const [paymentDescription, setPaymentDescription] = useState("");
-  const [paymentMode, setPaymentMode] = useState("");
-  const [paidBy, setPaidBy] = useState("");
+  const [paymentDescription, setPaymentDescription] = useState('');
+  const [paymentMode, setPaymentMode] = useState('');
+  const [paidBy, setPaidBy] = useState('');
 
   // STATES AND VARIABLES DECLARATION ENDS HERE /////////////////////////////////////////
   const getAdvance = async (tempID) => {
     try {
-      console.log("Farmer Id", Number(tempID));
+      console.log('Farmer Id', Number(tempID));
       const tempData = await getAdvanceData({ farmerid: Number(tempID) });
       // console.log("Advance Data before transformation", tempData);
       const transformedAdvanceData = tempData.map((item) => ({
@@ -121,8 +121,8 @@ export default function ClientComponent({ params: { farmerUID } }) {
         paiddate: item.paidtimestamp,
         advance: true,
         item: item.time,
-        quantity: "-",
-        weight: "-",
+        quantity: '-',
+        weight: '-',
         someid: item.farmerpaymentid,
         // Add other fields as required
       }));
@@ -131,7 +131,7 @@ export default function ClientComponent({ params: { farmerUID } }) {
     } catch (error) {
       setAlert({
         state: true,
-        type: "danger",
+        type: 'danger',
         message: error,
       });
     }
@@ -169,8 +169,8 @@ export default function ClientComponent({ params: { farmerUID } }) {
                   paiddate: item.paiddate,
                   advance: true,
                   item: item.time,
-                  quantity: "-",
-                  weight: "-",
+                  quantity: '-',
+                  weight: '-',
                   someid: item.farmerpaymentid,
                   // Add other fields as required
                 }));
@@ -178,15 +178,15 @@ export default function ClientComponent({ params: { farmerUID } }) {
               } else {
                 setAlert({
                   state: true,
-                  message: "Did not find any advance data",
-                  type: "danger",
+                  message: 'Did not find any advance data',
+                  type: 'danger',
                 });
               }
             } else {
               setAlert({
                 state: true,
-                message: "Did not find any data",
-                type: "danger",
+                message: 'Did not find any data',
+                type: 'danger',
               });
             }
           } else {
@@ -264,10 +264,10 @@ export default function ClientComponent({ params: { farmerUID } }) {
           }
         })
         .catch((error) => {
-          console.error("Error fetching data: ", error);
+          console.error('Error fetching data: ', error);
           setAlert({
             state: true,
-            type: "danger",
+            type: 'danger',
             message: error,
           });
         })
@@ -280,7 +280,7 @@ export default function ClientComponent({ params: { farmerUID } }) {
   useEffect(() => {
     setFocusedIndex(-1);
     const timerId = setTimeout(() => {
-      if (searchTerm !== "" && isFocused) {
+      if (searchTerm !== '' && isFocused) {
         const searchData = farmers.filter((farmer) =>
           farmer.farmername
             .toLowerCase()
@@ -295,15 +295,15 @@ export default function ClientComponent({ params: { farmerUID } }) {
   }, [searchTerm]);
 
   const keyDownHandler = (e) => {
-    if (e.key === "ArrowDown") {
+    if (e.key === 'ArrowDown') {
       e.preventDefault();
       setFocusedIndex((prevIndex) =>
         Math.min(prevIndex + 1, searchedItems.length - 1)
       );
-    } else if (e.key === "ArrowUp") {
+    } else if (e.key === 'ArrowUp') {
       e.preventDefault();
       setFocusedIndex((prevIndex) => Math.max(prevIndex - 1, 0));
-    } else if (e.key === "Enter") {
+    } else if (e.key === 'Enter') {
       e.preventDefault();
       if (searchedItems.length > 0) {
         sear;
@@ -323,13 +323,13 @@ export default function ClientComponent({ params: { farmerUID } }) {
     setToPayAmt(0);
     setAdvanceStatus({});
     setStatusE({});
-    setFarmerName("");
-    setMobileNo("");
-    setUid("");
+    setFarmerName('');
+    setMobileNo('');
+    setUid('');
     // console.log("This", uid);
 
     try {
-      if (searchTerm !== "" && uid === "") {
+      if (searchTerm !== '' && uid === '') {
         // console.log("Search Term", searchTerm);
         setUid(
           farmers.find((farmer) => farmer.farmername === searchTerm.trim())?.uid
@@ -406,13 +406,13 @@ export default function ClientComponent({ params: { farmerUID } }) {
     } catch (error) {
       setAlert({
         state: true,
-        type: "danger",
+        type: 'danger',
         message: error.message,
       });
-      console.log("Error", error);
+      console.log('Error', error);
     } finally {
       setLoading(false);
-      console.log("Loading", loading);
+      console.log('Loading', loading);
     }
   };
 
@@ -424,35 +424,47 @@ export default function ClientComponent({ params: { farmerUID } }) {
     // console.log("Payment Mode", paymentMode);
     setOpenSaveMenu(false);
     try {
-      console.log("Update", update);
-      console.log("Advance Updates", advanceUpdates);
+      console.log('Update', update);
+      console.log('Advance Updates', advanceUpdates);
       if (Object.keys(update).length != 0) {
-        updatePaidStatus({ update, today, paymentDescription, paymentMode, paidBy })
+        updatePaidStatus({
+          update,
+          today,
+          paymentDescription,
+          paymentMode,
+          paidBy,
+        })
           .then((data) => {
             // console.log("Data", data[0]?.paidtimestamp);
             setAlert({
               state: true,
-              message: "Paid Updated Successfully",
-              type: "success",
+              message: 'Paid Updated Successfully',
+              type: 'success',
             });
             setUpdates({});
           })
           .catch((error) => {
             setAlert({
               state: true,
-              type: "danger",
-              message: "Error Updating Paid Status",
+              type: 'danger',
+              message: 'Error Updating Paid Status',
             });
           });
       }
       if (Object.keys(advanceUpdates).length != 0) {
-        console.log("Advance Updates", advanceUpdates);
-        await updateAdvancePaidStatus({ update: advanceUpdates, today, paymentDescription, paymentMode, paidBy });
+        console.log('Advance Updates', advanceUpdates);
+        await updateAdvancePaidStatus({
+          update: advanceUpdates,
+          today,
+          paymentDescription,
+          paymentMode,
+          paidBy,
+        });
         // console.log("Advance Updates have been sent to db", advanceUpdates);
         setAlert({
           state: true,
-          message: "Paid Updated Successfully",
-          type: "success",
+          message: 'Paid Updated Successfully',
+          type: 'success',
         });
         setAdvanceUpdates({});
       }
@@ -481,16 +493,16 @@ export default function ClientComponent({ params: { farmerUID } }) {
     } catch (error) {
       setAlert({
         state: true,
-        type: "danger",
+        type: 'danger',
         message: error,
       });
-      window.alert("Error Updating Paid Refresh the page and try again");
+      window.alert('Error Updating Paid Refresh the page and try again');
     } finally {
       setLoading(false);
       setSubmit(false);
-      setPaymentDescription("");
-      setPaymentMode("");
-      setPaidBy("");
+      setPaymentDescription('');
+      setPaymentMode('');
+      setPaidBy('');
       setPaidAmt(paidAmt + sumOfChecked);
       setToPayAmt(toPayAmt - sumOfChecked);
       setSumOfChecked(0);
@@ -566,7 +578,7 @@ export default function ClientComponent({ params: { farmerUID } }) {
                       ${index + 1}
                     </td>
                     <td class="whitespace-nowrap  text-center py-2 text-gray-700 border">
-                      ${item.date.toLocaleDateString("en-IN")}
+                      ${item.date.toLocaleDateString('en-IN')}
                     </td>
                     <td class="whitespace-nowrap  text-center py-2 text-gray-700 border">
                       ${item.item}
@@ -581,24 +593,24 @@ export default function ClientComponent({ params: { farmerUID } }) {
                       ${item.weight}
                     </td>
                     <td class="whitespace-nowrap  text-center py-2 text-gray-700 border">
-                      ${item.payable ? `₹${item.payable.toLocaleString("en-IN")}/-` : "-"}
+                      ${item.payable ? `₹${item.payable.toLocaleString('en-IN')}/-` : '-'}
                     </td>
                     <td class="whitespace-nowrap  text-center py-2 text-gray-700 border">
-                      ${item.paiddate ? item.paiddate.toLocaleDateString("en-IN") : "-"}
+                      ${item.paiddate ? item.paiddate.toLocaleDateString('en-IN') : '-'}
                     </td>
                   </tr>
                   `
                     )
-                    .join("")}
+                    .join('')}
                 </tbody>
                 
               </table>
               <div class="flex justify-center mt-4 space-x-3">
                 <div class="font-bold text-center text-gray-700">
-                  Paid amt: ₹${paidAmt.toLocaleString("en-IN")}/-
+                  Paid amt: ₹${paidAmt.toLocaleString('en-IN')}/-
                   </div>
                   <div class="font-bold text-center text-gray-700">
-                  Amt to pay : ₹${toPayAmt.toLocaleString("en-IN")}/-
+                  Amt to pay : ₹${toPayAmt.toLocaleString('en-IN')}/-
                   </div>
                   </div>
             </div>
@@ -617,8 +629,8 @@ export default function ClientComponent({ params: { farmerUID } }) {
       <li
         key={farmername}
         className={`cursor-pointe ${
-          isSel ? "bg-blue-400 text-white" : ""
-        }hover:bg-blue-400 hover:text-white p-1 rounded-md`}
+          isSel ? 'bg-blue-400 text-white' : ''
+        }hover:bg-blue-400 rounded-md p-1 hover:text-white`}
         onClick={() => setSearchTerm(farmername)}
       >
         {farmername}
@@ -628,7 +640,7 @@ export default function ClientComponent({ params: { farmerUID } }) {
 
   return (
     <div className="p-2 md:p-14 lg:p-14">
-      <div className="relative rounded-lg bg-white p-8 shadow-lg lg:col-span-3 lg:p-12 ">
+      <div className="relative rounded-lg bg-white p-8 shadow-lg lg:col-span-3 lg:p-12">
         {alert.state && (
           <Alert
             message={alert.message}
@@ -639,21 +651,19 @@ export default function ClientComponent({ params: { farmerUID } }) {
         )}
         {!allowed && (
           <Alert
-            message={"You cannot mark the payment"}
-            type={"danger"}
+            message={'You cannot mark the payment'}
+            type={'danger'}
             setState={setAlert}
             timer={1000}
           />
         )}
-        {loading && (
-          <Loader />
-        )}
+        {loading && <Loader />}
         <div className="flex justify-evenly">
           <form
             onSubmit={handleSearch}
-            className={`flex w-full ${loading ? "opacity-20" : ""}`}
+            className={`flex w-full ${loading ? 'opacity-20' : ''}`}
           >
-            <div className=" flex w-full md:w-1/2 mx-2 space-x-2 ">
+            <div className="mx-2 flex w-full space-x-2 md:w-1/2">
               <input
                 className="w-full rounded-lg border-gray-200 p-3 text-sm"
                 placeholder="farmerName"
@@ -681,11 +691,11 @@ export default function ClientComponent({ params: { farmerUID } }) {
                 disabled={loading}
               />
             </div>
-            <div className="group ">
+            <div className="group">
               <button
                 id="search"
                 disabled={loading}
-                className=" py-2.5 px-2 md:px-12 transition-colors bg-gray-50 border active:bg-blue-800 font-medium border-gray-200 hover:text-white text-blue-600 group-hover:border-blue-700 rounded-lg group-hover:bg-blue-600 disabled:opacity-50"
+                className="rounded-lg border border-gray-200 bg-gray-50 px-2 py-2.5 font-medium text-blue-600 transition-colors hover:text-white active:bg-blue-800 disabled:opacity-50 group-hover:border-blue-700 group-hover:bg-blue-600 md:px-12"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -705,13 +715,13 @@ export default function ClientComponent({ params: { farmerUID } }) {
 
           <button
             onClick={printPDF}
-            className={`inline-flex items-center rounded-lg bg-black py-2 px-4 hover:bg-gray-800 font-medium text-white ${
-              print ? "opacity-50" : ""
-            } ${loading ? "opacity-20" : ""}`}
+            className={`inline-flex items-center rounded-lg bg-black px-4 py-2 font-medium text-white hover:bg-gray-800 ${
+              print ? 'opacity-50' : ''
+            } ${loading ? 'opacity-20' : ''}`}
             disabled={print || loading || allowed}
           >
             <svg
-              class="w-6 h-6 text-gray-800 dark:text-white"
+              class="h-6 w-6 text-gray-800 dark:text-white"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
@@ -727,7 +737,7 @@ export default function ClientComponent({ params: { farmerUID } }) {
           </button>
         </div>
 
-        <ul className="ml-2 mt-2 bg-gray-400 w-1/2 text-white  rounded-md">
+        <ul className="ml-2 mt-2 w-1/2 rounded-md bg-gray-400 text-white">
           {searchResult}
         </ul>
         {openSaveMenu && (
@@ -742,52 +752,52 @@ export default function ClientComponent({ params: { farmerUID } }) {
         )}
         {entries.length !== 0 && (
           <form
-            className={`space-y-4 ${loading || openSaveMenu ? "opacity-20" : ""}`}
+            className={`space-y-4 ${loading || openSaveMenu ? 'opacity-20' : ''}`}
             onSubmit={handleSave}
           >
-            <div className="flex justify-around mt-4">
+            <div className="mt-4 flex justify-around">
               <div className="ml-2font-bold">UID: {uid}</div>
               <div className="ml-2font-bold">Farmer Name : {farmername}</div>
               <div className="ml-2font-bold">Mobile Number : {mobileNo}</div>
             </div>
             <div className="w-full border-b-2 border-gray-500"></div>
 
-            <table className="min-w-full divide-y-2  divide-gray-200 bg-white text-sm mt-5 md:block">
+            <table className="mt-5 min-w-full divide-y-2 divide-gray-200 bg-white text-sm md:block">
               <thead className="">
                 <tr>
-                  <th className="whitespace-nowrap  px-1 md:px-10 lg:px-10 py-2 font-bold text-gray-900">
+                  <th className="whitespace-nowrap px-1 py-2 font-bold text-gray-900 md:px-10 lg:px-10">
                     Sr. No.
                   </th>
-                  <th className="whitespace-nowrap  px-1 md:px-10 lg:px-10 py-2 font-bold text-gray-900">
+                  <th className="whitespace-nowrap px-1 py-2 font-bold text-gray-900 md:px-10 lg:px-10">
                     Date
                   </th>
-                  <th className="whitespace-nowrap  px-1 md:px-10 lg:px-10 py-2 font-bold text-gray-900">
+                  <th className="whitespace-nowrap px-1 py-2 font-bold text-gray-900 md:px-10 lg:px-10">
                     Item
                   </th>
 
-                  <th className="whitespace-nowrap  px-1 md:px-10 lg:px-10 py-2 font-bold text-gray-900">
+                  <th className="whitespace-nowrap px-1 py-2 font-bold text-gray-900 md:px-10 lg:px-10">
                     Vendor
                   </th>
-                  <th className="whitespace-nowrap  px-1 md:px-10 lg:px-10 py-2 font-bold text-gray-900">
+                  <th className="whitespace-nowrap px-1 py-2 font-bold text-gray-900 md:px-10 lg:px-10">
                     Quantity
                   </th>
-                  <th className="whitespace-nowrap  px-1 md:px-10 lg:px-10 py-2 font-bold text-gray-900">
+                  <th className="whitespace-nowrap px-1 py-2 font-bold text-gray-900 md:px-10 lg:px-10">
                     Weight
                   </th>
-                  
+
                   <th
-                    className={`whitespace-nowrap  px-1 md:px-10 lg:px-10 py-2 font-bold text-gray-900 ${advanceExists ? "block" : "hidden"}`}
+                    className={`whitespace-nowrap px-1 py-2 font-bold text-gray-900 md:px-10 lg:px-10 ${advanceExists ? 'block' : 'hidden'}`}
                   >
                     Advance
                   </th>
-                  <th className="whitespace-nowrap  px-1 md:px-10 lg:px-10 py-2 font-bold text-gray-900">
+                  <th className="whitespace-nowrap px-1 py-2 font-bold text-gray-900 md:px-10 lg:px-10">
                     Payable
                   </th>
-                  <th className="whitespace-nowrap  px-1 md:px-10 lg:px-10 py-2 font-bold text-gray-900">
+                  <th className="whitespace-nowrap px-1 py-2 font-bold text-gray-900 md:px-10 lg:px-10">
                     Date Paid
                   </th>
-                  <th className="whitespace-nowrap  px-1 md:px-10 lg:px-10 py-2 font-bold text-gray-900">
-                   Paid
+                  <th className="whitespace-nowrap px-1 py-2 font-bold text-gray-900 md:px-10 lg:px-10">
+                    Paid
                   </th>
                 </tr>
               </thead>
@@ -796,43 +806,43 @@ export default function ClientComponent({ params: { farmerUID } }) {
                   return (
                     <tr key={index}>
                       <td
-                        className={`whitespace-nowrap text-center py-2 text-gray-700`}
+                        className={`whitespace-nowrap py-2 text-center text-gray-700`}
                       >
                         {index + 1}
                       </td>
                       <td
-                        className={`whitespace-nowrap text-center py-2 ${
+                        className={`whitespace-nowrap py-2 text-center ${
                           entry.advance && !entry.paid
-                            ? "text-red-500"
-                            : "text-gray-700"
+                            ? 'text-red-500'
+                            : 'text-gray-700'
                         }`}
                       >
-                        {entry.date.toLocaleDateString("en-IN")}
+                        {entry.date.toLocaleDateString('en-IN')}
                       </td>
 
                       {entry.advance ? (
                         <>
                           <td
-                            className={`whitespace-nowrap text-center py-2 ${
+                            className={`whitespace-nowrap py-2 text-center ${
                               entry.advance && !entry.paid
-                                ? "text-red-500"
-                                : "text-gray-700"
+                                ? 'text-red-500'
+                                : 'text-gray-700'
                             }`}
                           >
                             {entry.time}
                           </td>
                           <td
-                            className={`whitespace-nowrap text-center py-2 font-bold ${
+                            className={`whitespace-nowrap py-2 text-center font-bold ${
                               entry.advance && !entry.paid
-                                ? "text-red-500"
-                                : "text-gray-700"
+                                ? 'text-red-500'
+                                : 'text-gray-700'
                             }`}
                             colSpan="3"
                           >
                             {entry.vendorname}
                           </td>
                           <td
-                            className={`whitespace-nowrap text-center py-text-gray-700`}
+                            className={`py-text-gray-700 whitespace-nowrap text-center`}
                           >
                             ₹{entry.payable || 0}
                           </td>
@@ -840,51 +850,51 @@ export default function ClientComponent({ params: { farmerUID } }) {
                       ) : (
                         <>
                           <td
-                            className={`whitespace-nowrap text-center py-2 ${
+                            className={`whitespace-nowrap py-2 text-center ${
                               entry.advance && !entry.paid
-                                ? "text-red-500"
-                                : "text-gray-700"
+                                ? 'text-red-500'
+                                : 'text-gray-700'
                             }`}
                           >
                             {entry.item}
                           </td>
                           <td
-                            className={`whitespace-nowrap text-center py-2 ${
+                            className={`whitespace-nowrap py-2 text-center ${
                               entry.advance && !entry.paid
-                                ? "text-red-500"
-                                : "text-gray-700"
+                                ? 'text-red-500'
+                                : 'text-gray-700'
                             }`}
                           >
                             {entry.vendorname}
                           </td>
                           <td
-                            className={`whitespace-nowrap text-center py-2 ${
+                            className={`whitespace-nowrap py-2 text-center ${
                               entry.advance && !entry.paid
-                                ? "text-red-500"
-                                : "text-gray-700"
+                                ? 'text-red-500'
+                                : 'text-gray-700'
                             }`}
                           >
                             {entry.quantity}
                           </td>
                           <td
-                            className={`whitespace-nowrap text-center py-2 ${
+                            className={`whitespace-nowrap py-2 text-center ${
                               entry.advance && !entry.paid
-                                ? "text-red-500"
-                                : "text-gray-700"
+                                ? 'text-red-500'
+                                : 'text-gray-700'
                             }`}
                           >
-                            {entry.weight} {entry.advance ? "" : "Kg"}
+                            {entry.weight} {entry.advance ? '' : 'Kg'}
                           </td>
                           <td
-                            className={`whitespace-nowrap text-center py-text-gray-700 ${advanceExists ? "block" : "hidden"}`}
+                            className={`py-text-gray-700 whitespace-nowrap text-center ${advanceExists ? 'block' : 'hidden'}`}
                           >
-                            {""}
+                            {''}
                           </td>
                           <td
-                            className={`whitespace-nowrap text-center py-2 ${
+                            className={`whitespace-nowrap py-2 text-center ${
                               entry.advance && !entry.paid
-                                ? "text-red-500"
-                                : "text-gray-700"
+                                ? 'text-red-500'
+                                : 'text-gray-700'
                             }`}
                           >
                             ₹{entry.payable || 0}
@@ -893,26 +903,26 @@ export default function ClientComponent({ params: { farmerUID } }) {
                       )}
 
                       <td
-                        className={`whitespace-nowrap text-center py-2 ${
+                        className={`whitespace-nowrap py-2 text-center ${
                           entry.advance && !entry.paid
-                            ? "text-red-500"
-                            : "text-gray-700"
+                            ? 'text-red-500'
+                            : 'text-gray-700'
                         }`}
                       >
                         {entry.paiddate
-                          ? entry.paiddate.toLocaleDateString("en-IN")
-                          : "Not Paid"}
+                          ? entry.paiddate.toLocaleDateString('en-IN')
+                          : 'Not Paid'}
                       </td>
-                      <td className="whitespace-nowrap text-center py-2 text-gray-700">
+                      <td className="whitespace-nowrap py-2 text-center text-gray-700">
                         <input
                           name="paid"
-                          className={` accent-pink-500 rounded-lg border-gray-200 p-3 text-sm ${
+                          className={`rounded-lg border-gray-200 p-3 text-sm accent-pink-500 ${
                             entry.payable == 0 ||
-                            entry.payable === "" ||
+                            entry.payable === '' ||
                             entry.payable == null ||
                             entry.paiddate !== null
-                              ? "cursor-not-allowed bg-gray-200 text-blue-200"
-                              : "bg-white cursor-pointer"
+                              ? 'cursor-not-allowed bg-gray-200 text-blue-200'
+                              : 'cursor-pointer bg-white'
                           }`}
                           type="checkbox"
                           checked={
@@ -924,11 +934,11 @@ export default function ClientComponent({ params: { farmerUID } }) {
                           }
                           onChange={(e) => {
                             const value = e.target.checked;
-                            console.log("Value", value);
-                            console.log("Entry", entry);
+                            console.log('Value', value);
+                            console.log('Entry', entry);
                             if (!entry.advance) {
-                              console.log("entry advance", entry.advance);
-                              console.log("Only for Entry");
+                              console.log('entry advance', entry.advance);
+                              console.log('Only for Entry');
                               setUpdates((prev) => {
                                 return { ...prev, [entry.entryid]: value };
                               });
@@ -942,8 +952,8 @@ export default function ClientComponent({ params: { farmerUID } }) {
                                   return prev;
                                 });
                             } else {
-                              console.log("entry advance", entry.advance);
-                              console.log("Only for Advance");
+                              console.log('entry advance', entry.advance);
+                              console.log('Only for Advance');
                               setAdvanceStatus((prev) => {
                                 return {
                                   ...prev,
@@ -978,7 +988,7 @@ export default function ClientComponent({ params: { farmerUID } }) {
                           disabled={
                             false ||
                             entry.payable == 0 ||
-                            entry.payable === "" ||
+                            entry.payable === '' ||
                             entry.payable == null ||
                             loading ||
                             entry.paiddate !== null ||
@@ -992,39 +1002,39 @@ export default function ClientComponent({ params: { farmerUID } }) {
               </tbody>
               <tfoot>
                 <tr>
-                  <td className="whitespace-nowrap text-center py-2 text-gray-700"></td>
+                  <td className="whitespace-nowrap py-2 text-center text-gray-700"></td>
                   <td
                     colSpan={3}
-                    className="whitespace-nowrap text-center py-2 text-gray-700"
+                    className="whitespace-nowrap py-2 text-center text-gray-700"
                   ></td>
                   <td
                     colSpan={2}
-                    className="whitespace-nowrap font-bold text-center py-2 text-gray-700  "
+                    className="whitespace-nowrap py-2 text-center font-bold text-gray-700"
                   >
                     Amount Paid
                   </td>
-                  <td className="whitespace-nowrap font-bold text-center py-2 text-gray-700 ">
-                    ₹{paidAmt.toLocaleString("en-IN")}/-
+                  <td className="whitespace-nowrap py-2 text-center font-bold text-gray-700">
+                    ₹{paidAmt.toLocaleString('en-IN')}/-
                   </td>
-                  <td className="whitespace-nowrap font-bold text-center py-2 text-gray-700 ">
+                  <td className="whitespace-nowrap py-2 text-center font-bold text-gray-700">
                     Amount to Pay
                   </td>
-                  <td className="whitespace-nowrap font-bold text-center py-2 text-gray-700 ">
-                    ₹{toPayAmt.toLocaleString("en-IN")}/-
+                  <td className="whitespace-nowrap py-2 text-center font-bold text-gray-700">
+                    ₹{toPayAmt.toLocaleString('en-IN')}/-
                   </td>
                 </tr>
               </tfoot>
             </table>
             <div className="w-full border-b-2 border-gray-500"></div>
-            <div className="text-center text-green-800 font-semibold text-xl">
-              Selected amt : ₹{sumOfChecked.toLocaleString("en-IN")}/-
+            <div className="text-center text-xl font-semibold text-green-800">
+              Selected amt : ₹{sumOfChecked.toLocaleString('en-IN')}/-
             </div>
-            <div className="flex mt-8 justify-center items-center">
+            <div className="mt-8 flex items-center justify-center">
               <button
                 type="submit"
                 name="save"
-                className={`w-full rounded-lg bg-black px-10 py-3 mx-10 font-medium text-white sm:w-auto ${
-                  submit ? "cursor-not-allowed bg-gray-400" : ""
+                className={`mx-10 w-full rounded-lg bg-black px-10 py-3 font-medium text-white sm:w-auto ${
+                  submit ? 'cursor-not-allowed bg-gray-400' : ''
                 }`}
                 disabled={loading || submit || !allowed}
               >

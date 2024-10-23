@@ -1,6 +1,13 @@
 import React, { useEffect } from 'react';
 
-export default function SaveMenu({ setPaymentDescription, setPaymentMode, isOpen, setIsOpen, handleSavee, setPaidBy }) {
+export default function SaveMenu({
+  setPaymentDescription,
+  setPaymentMode,
+  isOpen,
+  setIsOpen,
+  handleSavee,
+  setPaidBy,
+}) {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -15,17 +22,30 @@ export default function SaveMenu({ setPaymentDescription, setPaymentMode, isOpen
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+      <div className="mx-4 w-full max-w-md rounded-lg bg-white shadow-xl">
         <form onSubmit={handleSavee} className="p-6">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-semibold text-gray-800">Save Payment</h2>
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="text-xl font-semibold text-gray-800">
+              Save Payment
+            </h2>
             <button
               onClick={() => setIsOpen(false)}
-              className="text-gray-500 hover:text-gray-700 transition-colors"
+              className="text-gray-500 transition-colors hover:text-gray-700"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <svg
+                className="h-6 w-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
           </div>
@@ -34,15 +54,15 @@ export default function SaveMenu({ setPaymentDescription, setPaymentMode, isOpen
               type="text"
               placeholder="Payment Description"
               onChange={(e) => setPaymentDescription(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
             <select
               onChange={(e) => setPaymentMode(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             >
-                <option value="">Select Payment Mode</option>
+              <option value="">Select Payment Mode</option>
               <option value="cash">Cash</option>
               <option value="upi">Online</option>
               <option value="cash-upi">Mix</option>
@@ -50,19 +70,18 @@ export default function SaveMenu({ setPaymentDescription, setPaymentMode, isOpen
             </select>
             <select
               onChange={(e) => setPaidBy(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             >
-                <option value="">Select Paid By</option>
+              <option value="">Select Paid By</option>
               <option value="gadekar">Gadekar</option>
               <option value="mangesh madhe">Mangesh Madhe</option>
               <option value="vinod aher">Vinod Aher</option>
               <option value="Other">Other</option>
             </select>
             <button
-            type='submit'
-              
-              className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              type="submit"
+              className="w-full rounded-md bg-blue-600 py-2 text-white transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             >
               Save
             </button>

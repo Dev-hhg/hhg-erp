@@ -1,5 +1,5 @@
-"use client";
-import Alert from "@/components/Alert";
+'use client';
+import Alert from '@/components/Alert';
 import {
   getFarmersALlData,
   updatePaidStatus,
@@ -8,36 +8,33 @@ import {
   getAdvanceData,
   updateAdvancePaidStatus,
   getFarmers,
-} from "@/serverComponents/dbFunctions";
-import { useState, useEffect } from "react";
-import { useSession } from "next-auth/react";
-import Loader from "@/components/Loader";
+} from '@/serverComponents/dbFunctions';
+import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
+import Loader from '@/components/Loader';
 
 export default function Page() {
-
   const { data: session, statusA } = useSession();
   const [allowed, setAllowed] = useState(false);
-  
+
   const [farmers, setFarmers] = useState([]);
   // const router = useRouter();
   // fetch farmer data from db once and store it in context
 
-
-  if(statusA === "authenticated")
-    {
-      if(session?.user?.role !== "guest"){
-        window.alert("You are not allowed to access this page");
-        setAllowed(true);
-      }
+  if (statusA === 'authenticated') {
+    if (session?.user?.role !== 'guest') {
+      window.alert('You are not allowed to access this page');
+      setAllowed(true);
     }
+  }
 
   useEffect(() => {
     const getFarmerDetails = async () => {
       try {
-        console.log("Fetching Farmers From DB");
+        console.log('Fetching Farmers From DB');
         const tempfarmers = await getFarmers();
-        console.log("Farmers", tempfarmers);
-        localStorage.setItem("farmers", JSON.stringify(tempfarmers));
+        console.log('Farmers', tempfarmers);
+        localStorage.setItem('farmers', JSON.stringify(tempfarmers));
         setFarmers(tempfarmers);
         return tempfarmers;
       } catch (error) {
@@ -49,24 +46,24 @@ export default function Page() {
         window.alert(error.message);
       }
     };
-    const storageFarmers = localStorage.getItem("farmers");
+    const storageFarmers = localStorage.getItem('farmers');
     setFarmers(JSON.parse(storageFarmers));
     if (!Boolean(storageFarmers)) {
       return () => getFarmerDetails();
     } else {
-      return () => console.log("Farmers data exist");
+      return () => console.log('Farmers data exist');
     }
   }, []);
 
   // STATES AND VARIABLES DECLARATION STARTS HERE /////////////////////////////////////////
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [entries, setEntries] = useState([]);
 
   const [sumOfChecked, setSumOfChecked] = useState(0);
   const [alert, setAlert] = useState({
     state: false,
-    type: "",
-    message: "",
+    type: '',
+    message: '',
   });
   const [loading, setLoading] = useState(false);
 
@@ -77,16 +74,16 @@ export default function Page() {
   const [paidAmt, setPaidAmt] = useState(0);
   const [toPayAmt, setToPayAmt] = useState(0);
 
-  const [uid, setUid] = useState("");
-  const [mobileNo, setMobileNo] = useState("");
-  const [farmername, setFarmerName] = useState("");
+  const [uid, setUid] = useState('');
+  const [mobileNo, setMobileNo] = useState('');
+  const [farmername, setFarmerName] = useState('');
 
   const [advanceUpdates, setAdvanceUpdates] = useState({});
   const [advanceStatus, setAdvanceStatus] = useState({});
   const [update, setUpdates] = useState({});
   const [status, setStatus] = useState({});
   const id = 0;
-  const today = new Date().toISOString().split("T")[0];
+  const today = new Date().toISOString().split('T')[0];
 
   // STATES AND VARIABLES DECLARATION ENDS HERE /////////////////////////////////////////
   // const getAdvance = async (tempID) => {
@@ -122,7 +119,7 @@ export default function Page() {
   useEffect(() => {
     setFocusedIndex(-1);
     const timerId = setTimeout(() => {
-      if (searchTerm !== "") {
+      if (searchTerm !== '') {
         const searchData = farmers.filter((farmer) =>
           farmer.farmername.includes(searchTerm.trim())
         );
@@ -135,15 +132,15 @@ export default function Page() {
   }, [searchTerm]);
 
   const keyDownHandler = (e) => {
-    if (e.key === "ArrowDown") {
+    if (e.key === 'ArrowDown') {
       e.preventDefault();
       setFocusedIndex((prevIndex) =>
         Math.min(prevIndex + 1, searchedItems.length - 1)
       );
-    } else if (e.key === "ArrowUp") {
+    } else if (e.key === 'ArrowUp') {
       e.preventDefault();
       setFocusedIndex((prevIndex) => Math.max(prevIndex - 1, 0));
-    } else if (e.key === "Enter") {
+    } else if (e.key === 'Enter') {
       e.preventDefault();
       if (searchedItems.length > 0) {
         setSearchTerm(searchedItems[focusedIndex].farmername);
@@ -161,24 +158,27 @@ export default function Page() {
     setToPayAmt(0);
     setAdvanceStatus({});
     setStatus({});
-    setFarmerName("");
-    setMobileNo("");
-    setUid("");
+    setFarmerName('');
+    setMobileNo('');
+    setUid('');
     try {
-      if (searchTerm !== "" && uid === "") {
-        console.log("Search Term", searchTerm);
+      if (searchTerm !== '' && uid === '') {
+        console.log('Search Term', searchTerm);
         setUid(
           farmers.find((farmer) => farmer.farmername === searchTerm.trim())?.uid
         );
-        console.log("UID", farmers.find((farmer) => farmer.farmername === searchTerm.trim())?.uid);
-        console.log("Re routing to findfarmer/uid");
+        console.log(
+          'UID',
+          farmers.find((farmer) => farmer.farmername === searchTerm.trim())?.uid
+        );
+        console.log('Re routing to findfarmer/uid');
         window.location.href = `/findfarmer/${farmers.find((farmer) => farmer.farmername === searchTerm.trim())?.uid}`;
         let id = farmers.find(
           (farmer) => farmer.farmername === searchTerm.trim()
         )?.farmerid;
-        console.log("Farmer Id", id);
+        console.log('Farmer Id', id);
         const data = await getFarmersALlData({ farmerid: id });
-        console.log("Data", data);
+        console.log('Data', data);
         const tempMobileNo = data.find(
           (entry) => entry.mobilenumber
         )?.mobilenumber;
@@ -309,13 +309,13 @@ export default function Page() {
     } catch (error) {
       setAlert({
         state: true,
-        type: "danger",
+        type: 'danger',
         message: error.message,
       });
-      console.log("Error", error);
+      console.log('Error', error);
     } finally {
       setLoading(false);
-      console.log("Loading", loading);
+      console.log('Loading', loading);
     }
   };
 
@@ -323,35 +323,35 @@ export default function Page() {
     e.preventDefault();
     setLoading(true);
     try {
-      console.log("Update", advanceUpdates);
+      console.log('Update', advanceUpdates);
       if (Object.keys(update).length != 0) {
         await updatePaidStatus({ update, today });
         setAlert({
           state: true,
-          message: "Paid Updated Successfully",
-          type: "success",
+          message: 'Paid Updated Successfully',
+          type: 'success',
         });
         setUpdates({});
       } else if (Object.keys(advanceUpdates).length != 0) {
         await updateAdvancePaidStatus({ update: advanceUpdates, today });
-        console.log("Advance Updates have been sent to db", advanceUpdates);
+        console.log('Advance Updates have been sent to db', advanceUpdates);
         setAlert({
           state: true,
-          message: "Paid Updated Successfully",
-          type: "success",
+          message: 'Paid Updated Successfully',
+          type: 'success',
         });
         setAdvanceUpdates({});
       } else {
         setAlert({
           state: true,
-          message: "Nothing To Update",
-          type: "warn",
+          message: 'Nothing To Update',
+          type: 'warn',
         });
       }
     } catch (error) {
       setAlert({
         state: true,
-        type: "danger",
+        type: 'danger',
         message: error,
       });
     } finally {
@@ -365,8 +365,8 @@ export default function Page() {
       <li
         key={farmername}
         className={`cursor-pointe ${
-          isSel ? "bg-blue-400 text-white" : ""
-        }hover:bg-blue-400 hover:text-white p-1 rounded-md`}
+          isSel ? 'bg-blue-400 text-white' : ''
+        }hover:bg-blue-400 rounded-md p-1 hover:text-white`}
         onClick={() => setSearchTerm(farmername)}
       >
         {farmername}
@@ -376,7 +376,7 @@ export default function Page() {
 
   return (
     <div className="p-2 md:p-14 lg:p-14">
-      <div className="relative rounded-lg bg-white p-8 shadow-lg lg:col-span-3 lg:p-12 ">
+      <div className="relative rounded-lg bg-white p-8 shadow-lg lg:col-span-3 lg:p-12">
         {alert.state && (
           <Alert
             message={alert.message}
@@ -385,14 +385,12 @@ export default function Page() {
             timer={5000}
           />
         )}
-        {loading && (
-          <Loader />
-        )}
+        {loading && <Loader />}
         <form
           onSubmit={handleSearch}
-          className={`flex ${loading ? "opacity-20" : ""}`}
+          className={`flex ${loading ? 'opacity-20' : ''}`}
         >
-          <div className=" flex w-full md:w-1/2 mx-2 space-x-2 ">
+          <div className="mx-2 flex w-full space-x-2 md:w-1/2">
             <input
               className="w-full rounded-lg border-gray-200 p-3 text-sm"
               placeholder="farmerName"
@@ -420,11 +418,11 @@ export default function Page() {
               disabled={loading}
             />
           </div>
-          <div className="group ">
+          <div className="group">
             <button
               id="search"
               disabled={loading}
-              className=" py-2.5 px-2 md:px-12 transition-colors bg-gray-50 border active:bg-blue-800 font-medium border-gray-200 hover:text-white text-blue-600 group-hover:border-blue-700 rounded-lg group-hover:bg-blue-600 disabled:opacity-50"
+              className="rounded-lg border border-gray-200 bg-gray-50 px-2 py-2.5 font-medium text-blue-600 transition-colors hover:text-white active:bg-blue-800 disabled:opacity-50 group-hover:border-blue-700 group-hover:bg-blue-600 md:px-12"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -441,53 +439,53 @@ export default function Page() {
             </button>
           </div>
         </form>
-        <ul className="ml-2 mt-2 bg-gray-400 w-1/2 text-white  rounded-md">
+        <ul className="ml-2 mt-2 w-1/2 rounded-md bg-gray-400 text-white">
           {searchResult}
         </ul>
         {entries.length !== 0 && (
           <form
-            className={`space-y-4 ${loading ? "opacity-20" : ""}`}
+            className={`space-y-4 ${loading ? 'opacity-20' : ''}`}
             onSubmit={handleSubmit}
           >
-            <div className="flex justify-around mt-4">
+            <div className="mt-4 flex justify-around">
               <div className="ml-2font-bold">UID: {uid}</div>
               <div className="ml-2font-bold">Farmer Name : {farmername}</div>
               <div className="ml-2font-bold">Mobile Number : {mobileNo}</div>
             </div>
             <div className="w-full border-b-2 border-gray-500"></div>
 
-            <table className="min-w-full divide-y-2  divide-gray-200 bg-white text-sm mt-5 md:block">
+            <table className="mt-5 min-w-full divide-y-2 divide-gray-200 bg-white text-sm md:block">
               <thead className="">
                 <tr>
-                  <th className="whitespace-nowrap  px-1 md:px-10 lg:px-10 py-2 font-bold text-gray-900">
-                   Sr. No. 
+                  <th className="whitespace-nowrap px-1 py-2 font-bold text-gray-900 md:px-10 lg:px-10">
+                    Sr. No.
                   </th>
-                  <th className="whitespace-nowrap  px-1 md:px-10 lg:px-10 py-2 font-bold text-gray-900">
+                  <th className="whitespace-nowrap px-1 py-2 font-bold text-gray-900 md:px-10 lg:px-10">
                     Date
                   </th>
-                  <th className="whitespace-nowrap  px-1 md:px-10 lg:px-10 py-2 font-bold text-gray-900">
+                  <th className="whitespace-nowrap px-1 py-2 font-bold text-gray-900 md:px-10 lg:px-10">
                     Farmer Name
                   </th>
 
-                  <th className="whitespace-nowrap  px-1 md:px-10 lg:px-10 py-2 font-bold text-gray-900">
+                  <th className="whitespace-nowrap px-1 py-2 font-bold text-gray-900 md:px-10 lg:px-10">
                     Vendor
                   </th>
-                  <th className="whitespace-nowrap  px-1 md:px-10 lg:px-10 py-2 font-bold text-gray-900">
+                  <th className="whitespace-nowrap px-1 py-2 font-bold text-gray-900 md:px-10 lg:px-10">
                     Quantity
                   </th>
-                  <th className="whitespace-nowrap  px-1 md:px-10 lg:px-10 py-2 font-bold text-gray-900">
+                  <th className="whitespace-nowrap px-1 py-2 font-bold text-gray-900 md:px-10 lg:px-10">
                     Weight
                   </th>
-                  <th className="whitespace-nowrap  px-1 md:px-10 lg:px-10 py-2 font-bold text-gray-900">
+                  <th className="whitespace-nowrap px-1 py-2 font-bold text-gray-900 md:px-10 lg:px-10">
                     Advance
                   </th>
-                  <th className="whitespace-nowrap  px-1 md:px-10 lg:px-10 py-2 font-bold text-gray-900">
+                  <th className="whitespace-nowrap px-1 py-2 font-bold text-gray-900 md:px-10 lg:px-10">
                     Payable
                   </th>
-                  <th className="whitespace-nowrap  px-1 md:px-10 lg:px-10 py-2 font-bold text-gray-900">
+                  <th className="whitespace-nowrap px-1 py-2 font-bold text-gray-900 md:px-10 lg:px-10">
                     Date Paid
                   </th>
-                  <th className="whitespace-nowrap  px-1 md:px-10 lg:px-10 py-2 font-bold text-gray-900">
+                  <th className="whitespace-nowrap px-1 py-2 font-bold text-gray-900 md:px-10 lg:px-10">
                     Paid
                   </th>
                 </tr>
@@ -497,102 +495,102 @@ export default function Page() {
                   return (
                     <tr key={index}>
                       <td
-                        className={`whitespace-nowrap text-center py-2 text-gray-700`}
+                        className={`whitespace-nowrap py-2 text-center text-gray-700`}
                       >
                         {index + 1}
                       </td>
                       <td
-                        className={`whitespace-nowrap text-center py-2 ${
+                        className={`whitespace-nowrap py-2 text-center ${
                           entry.advance && !entry.paid
-                            ? "text-red-500"
-                            : "text-gray-700"
+                            ? 'text-red-500'
+                            : 'text-gray-700'
                         }`}
                       >
-                        {entry.date.toLocaleDateString("en-IN")}
+                        {entry.date.toLocaleDateString('en-IN')}
                       </td>
 
                       {entry.advance ? (
                         <>
                           <td
-                            className={`whitespace-nowrap text-center py-2 ${
+                            className={`whitespace-nowrap py-2 text-center ${
                               entry.advance && !entry.paid
-                                ? "text-red-500"
-                                : "text-gray-700"
+                                ? 'text-red-500'
+                                : 'text-gray-700'
                             }`}
                           >
                             {entry.time}
                           </td>
                           <td
-                            className={`whitespace-nowrap text-center py-2 font-bold ${
+                            className={`whitespace-nowrap py-2 text-center font-bold ${
                               entry.advance && !entry.paid
-                                ? "text-red-500"
-                                : "text-gray-700"
+                                ? 'text-red-500'
+                                : 'text-gray-700'
                             }`}
                             colSpan="3"
                           >
                             {entry.vendorname}
                           </td>
                           <td
-                            className={`whitespace-nowrap text-center py-text-gray-700`}
+                            className={`py-text-gray-700 whitespace-nowrap text-center`}
                           >
                             ₹{entry.payable || 0}
                           </td>
                           <td
-                            className={`whitespace-nowrap text-center py-2 ${
+                            className={`whitespace-nowrap py-2 text-center ${
                               entry.advance && !entry.paid
-                                ? "text-red-500"
-                                : "text-gray-700"
+                                ? 'text-red-500'
+                                : 'text-gray-700'
                             }`}
                           ></td>
                         </>
                       ) : (
                         <>
                           <td
-                            className={`whitespace-nowrap text-center py-2 ${
+                            className={`whitespace-nowrap py-2 text-center ${
                               entry.advance && !entry.paid
-                                ? "text-red-500"
-                                : "text-gray-700"
+                                ? 'text-red-500'
+                                : 'text-gray-700'
                             }`}
                           >
                             {entry.item}
                           </td>
                           <td
-                            className={`whitespace-nowrap text-center py-2 ${
+                            className={`whitespace-nowrap py-2 text-center ${
                               entry.advance && !entry.paid
-                                ? "text-red-500"
-                                : "text-gray-700"
+                                ? 'text-red-500'
+                                : 'text-gray-700'
                             }`}
                           >
                             {entry.vendorname}
                           </td>
                           <td
-                            className={`whitespace-nowrap text-center py-2 ${
+                            className={`whitespace-nowrap py-2 text-center ${
                               entry.advance && !entry.paid
-                                ? "text-red-500"
-                                : "text-gray-700"
+                                ? 'text-red-500'
+                                : 'text-gray-700'
                             }`}
                           >
                             {entry.quantity}
                           </td>
                           <td
-                            className={`whitespace-nowrap text-center py-2 ${
+                            className={`whitespace-nowrap py-2 text-center ${
                               entry.advance && !entry.paid
-                                ? "text-red-500"
-                                : "text-gray-700"
+                                ? 'text-red-500'
+                                : 'text-gray-700'
                             }`}
                           >
-                            {entry.weight} {entry.advance ? "" : "Kg"}
+                            {entry.weight} {entry.advance ? '' : 'Kg'}
                           </td>
                           <td
-                            className={`whitespace-nowrap text-center py-text-gray-700`}
+                            className={`py-text-gray-700 whitespace-nowrap text-center`}
                           >
-                            {""}
+                            {''}
                           </td>
                           <td
-                            className={`whitespace-nowrap text-center py-2 ${
+                            className={`whitespace-nowrap py-2 text-center ${
                               entry.advance && !entry.paid
-                                ? "text-red-500"
-                                : "text-gray-700"
+                                ? 'text-red-500'
+                                : 'text-gray-700'
                             }`}
                           >
                             ₹{entry.payable || 0}
@@ -601,122 +599,124 @@ export default function Page() {
                       )}
 
                       <td
-                        className={`whitespace-nowrap text-center py-2 ${
+                        className={`whitespace-nowrap py-2 text-center ${
                           entry.advance && !entry.paid
-                            ? "text-red-500"
-                            : "text-gray-700"
+                            ? 'text-red-500'
+                            : 'text-gray-700'
                         }`}
                       >
                         {entry.paiddate
-                          ? entry.paiddate.toLocaleDateString("en-IN")
-                          : "Not Paid"}
+                          ? entry.paiddate.toLocaleDateString('en-IN')
+                          : 'Not Paid'}
                       </td>
                       {allowed && (
-                      <td className="whitespace-nowrap text-center py-2 text-gray-700">
-                        <input
-                          name="paid"
-                          className={`rounded-lg border-gray-200 p-3 text-sm ${
-                            entry.payable == 0 ||
-                            entry.payable === "" ||
-                            entry.payable == null
-                              ? "cursor-not-allowed bg-gray-200"
-                              : "bg-white cursor-pointer"
-                          }`}
-                          type="checkbox"
-                          checked={
-                            status[entry.entryid] || entry.advance
-                              ? advanceStatus[entry.farmerpaymentid]
-                              : false
-                          }
-                          onChange={(e) => {
-                            const value = e.target.checked;
-
-                            setUpdates((prev) => {
-                              return { ...prev, [entry.entryid]: value };
-                            });
-                            setStatus((prev) => {
-                              return { ...prev, [entry.entryid]: value };
-                            });
-                            setAdvanceStatus((prev) => {
-                              return {
-                                ...prev,
-                                [entry.farmerpaymentid]: value,
-                              };
-                            });
-                            setAdvanceUpdates((prev) => {
-                              return {
-                                ...prev,
-                                [entry.farmerpaymentid]: value,
-                              };
-                            });
-                            if (update[entry.entryid] === !entry.paid)
-                              setUpdates((prev) => {
-                                delete prev[entry.entryid];
-                                const temp = prev;
-                                return prev;
-                              });
-                            if (
-                              advanceUpdates[entry.farmerpaymentid] ===
-                              !entry.paid
-                            )
-                              setAdvanceUpdates((prev) => {
-                                delete prev[entry.farmerpaymentid];
-                                const temp = prev;
-                                return prev;
-                              });
-                            if (value) {
-                              setSumOfChecked((prev) => prev + entry.payable);
-                            } else {
-                              setSumOfChecked((prev) => prev - entry.payable);
+                        <td className="whitespace-nowrap py-2 text-center text-gray-700">
+                          <input
+                            name="paid"
+                            className={`rounded-lg border-gray-200 p-3 text-sm ${
+                              entry.payable == 0 ||
+                              entry.payable === '' ||
+                              entry.payable == null
+                                ? 'cursor-not-allowed bg-gray-200'
+                                : 'cursor-pointer bg-white'
+                            }`}
+                            type="checkbox"
+                            checked={
+                              status[entry.entryid] || entry.advance
+                                ? advanceStatus[entry.farmerpaymentid]
+                                : false
                             }
-                          }}
-                          disabled={
-                            false ||
-                            entry.payable == 0 ||
-                            entry.payable === "" ||
-                            entry.payable == null ||
-                            loading || !allowed
-                          }
-                        />
-                      </td>)}
+                            onChange={(e) => {
+                              const value = e.target.checked;
+
+                              setUpdates((prev) => {
+                                return { ...prev, [entry.entryid]: value };
+                              });
+                              setStatus((prev) => {
+                                return { ...prev, [entry.entryid]: value };
+                              });
+                              setAdvanceStatus((prev) => {
+                                return {
+                                  ...prev,
+                                  [entry.farmerpaymentid]: value,
+                                };
+                              });
+                              setAdvanceUpdates((prev) => {
+                                return {
+                                  ...prev,
+                                  [entry.farmerpaymentid]: value,
+                                };
+                              });
+                              if (update[entry.entryid] === !entry.paid)
+                                setUpdates((prev) => {
+                                  delete prev[entry.entryid];
+                                  const temp = prev;
+                                  return prev;
+                                });
+                              if (
+                                advanceUpdates[entry.farmerpaymentid] ===
+                                !entry.paid
+                              )
+                                setAdvanceUpdates((prev) => {
+                                  delete prev[entry.farmerpaymentid];
+                                  const temp = prev;
+                                  return prev;
+                                });
+                              if (value) {
+                                setSumOfChecked((prev) => prev + entry.payable);
+                              } else {
+                                setSumOfChecked((prev) => prev - entry.payable);
+                              }
+                            }}
+                            disabled={
+                              false ||
+                              entry.payable == 0 ||
+                              entry.payable === '' ||
+                              entry.payable == null ||
+                              loading ||
+                              !allowed
+                            }
+                          />
+                        </td>
+                      )}
                     </tr>
                   );
                 })}
               </tbody>
               <tfoot>
                 <tr>
-                  <td className="whitespace-nowrap text-center py-2 text-gray-700"></td>
+                  <td className="whitespace-nowrap py-2 text-center text-gray-700"></td>
                   <td
                     colSpan={3}
-                    className="whitespace-nowrap text-center py-2 text-gray-700"
+                    className="whitespace-nowrap py-2 text-center text-gray-700"
                   ></td>
                   <td
                     colSpan={2}
-                    className="whitespace-nowrap font-bold text-center py-2 text-gray-700  "
+                    className="whitespace-nowrap py-2 text-center font-bold text-gray-700"
                   >
                     Amount Paid
                   </td>
-                  <td className="whitespace-nowrap font-bold text-center py-2 text-gray-700 ">
-                    ₹{paidAmt.toLocaleString("en-IN")}/-
+                  <td className="whitespace-nowrap py-2 text-center font-bold text-gray-700">
+                    ₹{paidAmt.toLocaleString('en-IN')}/-
                   </td>
-                  <td className="whitespace-nowrap font-bold text-center py-2 text-gray-700 ">
+                  <td className="whitespace-nowrap py-2 text-center font-bold text-gray-700">
                     Amount To Pay
                   </td>
-                  <td className="whitespace-nowrap font-bold text-center py-2 text-gray-700 ">
-                    ₹{toPayAmt.toLocaleString("en-IN")}/-
+                  <td className="whitespace-nowrap py-2 text-center font-bold text-gray-700">
+                    ₹{toPayAmt.toLocaleString('en-IN')}/-
                   </td>
                 </tr>
               </tfoot>
             </table>
             <div className="w-full border-b-2 border-gray-500"></div>
-            <div className="text-center text-green-800 font-semibold text-xl">
-              Selected Reciepts amt : ₹{sumOfChecked.toLocaleString("en-IN")}/-
+            <div className="text-center text-xl font-semibold text-green-800">
+              Selected Reciepts amt : ₹{sumOfChecked.toLocaleString('en-IN')}/-
             </div>
-            <div className="flex mt-8 justify-center items-center">
+            <div className="mt-8 flex items-center justify-center">
               <button
                 type="submit"
                 name="save"
-                className="inline-block w-full rounded-lg bg-black px-10 py-3 mx-10 font-medium text-white sm:w-auto"
+                className="mx-10 inline-block w-full rounded-lg bg-black px-10 py-3 font-medium text-white sm:w-auto"
                 disabled={loading}
               >
                 Save

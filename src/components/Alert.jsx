@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 const Alert = ({ message, type, timer, setState, relod }) => {
   useEffect(() => {
     let timeoutId;
@@ -24,37 +24,37 @@ const Alert = ({ message, type, timer, setState, relod }) => {
   };
 
   const renderAlert = () => {
-    let alertClasses = "flex w-96 shadow-lg rounded-lg";
-    let iconColor = "text-gray-700";
+    let alertClasses = 'flex w-96 shadow-lg rounded-lg';
+    let iconColor = 'text-gray-700';
 
     switch (type) {
-      case "info":
-        alertClasses += " bg-blue-500";
-        iconColor = "text-white";
+      case 'info':
+        alertClasses += ' bg-blue-500';
+        iconColor = 'text-white';
         break;
-      case "success":
-        alertClasses += " bg-green-600";
-        iconColor = "text-white";
+      case 'success':
+        alertClasses += ' bg-green-600';
+        iconColor = 'text-white';
         break;
-      case "warn":
-        alertClasses += " bg-yellow-600";
-        iconColor = "text-white";
+      case 'warn':
+        alertClasses += ' bg-yellow-600';
+        iconColor = 'text-white';
         break;
-      case "danger":
-        alertClasses += " bg-red-600";
-        iconColor = "text-white";
+      case 'danger':
+        alertClasses += ' bg-red-600';
+        iconColor = 'text-white';
         break;
       default:
         break;
     }
 
     return (
-      <div className="fixed top-4 right-4 left-4 md:left-auto z-50">
+      <div className="fixed left-4 right-4 top-4 z-50 md:left-auto">
         <div className={`${alertClasses} w-full md:w-96`}>
-        <div
-        className={`py-2 px-3 md:py-4 md:px-6 rounded-l-lg flex items-center ${iconColor}`}
+          <div
+            className={`flex items-center rounded-l-lg px-3 py-2 md:px-6 md:py-4 ${iconColor}`}
           >
-            {type === "info" && (
+            {type === 'info' && (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="fill-current"
@@ -68,10 +68,10 @@ const Alert = ({ message, type, timer, setState, relod }) => {
                 ></path>
               </svg>
             )}
-            {type === "success" && (
+            {type === 'success' && (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="text-white fill-current"
+                className="fill-current text-white"
                 viewBox="0 0 16 16"
                 width="20"
                 height="20"
@@ -82,7 +82,7 @@ const Alert = ({ message, type, timer, setState, relod }) => {
                 ></path>
               </svg>
             )}
-            {type === "warn" && (
+            {type === 'warn' && (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 16 16"
@@ -96,7 +96,7 @@ const Alert = ({ message, type, timer, setState, relod }) => {
                 ></path>
               </svg>
             )}
-            {type === "danger" && (
+            {type === 'danger' && (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 16 16"
@@ -111,7 +111,7 @@ const Alert = ({ message, type, timer, setState, relod }) => {
               </svg>
             )}
           </div>
-          <div className="px-4 py-6 bg-white rounded-r-lg flex justify-between items-center w-full border border-l-transparent border-gray-200">
+          <div className="flex w-full items-center justify-between rounded-r-lg border border-gray-200 border-l-transparent bg-white px-4 py-6">
             <div>{message}</div>
             <button onClick={dismissAlert}>
               <svg

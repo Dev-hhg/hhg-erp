@@ -1,12 +1,12 @@
-"use client";
-import { useEffect, useState, useContext } from "react";
+'use client';
+import { useEffect, useState, useContext } from 'react';
 
-import VendorSelect from "@/components/VendorSelect";
-import Alert from "@/components/Alert";
-import { VendorContext } from "../Context/vendorcontext";
-import { useRouter } from "next/navigation";
-import { refreshMaterializedView } from "@/serverComponents/dbFunctions";
-import Loader from "@/components/Loader";
+import VendorSelect from '@/components/VendorSelect';
+import Alert from '@/components/Alert';
+import { VendorContext } from '../Context/vendorcontext';
+import { useRouter } from 'next/navigation';
+import { refreshMaterializedView } from '@/serverComponents/dbFunctions';
+import Loader from '@/components/Loader';
 
 export default function Page() {
   const router = useRouter();
@@ -17,7 +17,7 @@ export default function Page() {
   const [loading, setLoading] = useState(false);
 
   function handleLateClick() {
-	router.push("/lateentry");
+    router.push('/lateentry');
   }
 
   function handleRefresh() {
@@ -25,18 +25,17 @@ export default function Page() {
       .then((res) => {
         setAlert({
           state: true,
-          message: "Materialised view refreshed",
-          type: "success",
+          message: 'Materialised view refreshed',
+          type: 'success',
         });
       })
       .catch((err) => {
         setAlert({
           state: true,
-          message: "Error refreshing materialised view",
-          type: "error",
+          message: 'Error refreshing materialised view',
+          type: 'error',
         });
-      })
-    
+      });
   }
 
   return (
@@ -49,13 +48,11 @@ export default function Page() {
           timer={2000}
         />
       )}
-      {loading && (
-        <Loader />
-      )}
+      {loading && <Loader />}
 
-      <div className=" overflow-x-auto rounded-lg bg-white p-8 shadow-lg lg:col-span-3 lg:p-8 ">
+      <div className="overflow-x-auto rounded-lg bg-white p-8 shadow-lg lg:col-span-3 lg:p-8">
         <div className="flex flex-row justify-center space-x-4">
-          <h1 className="text-3xl font-bold text-center">Extras</h1>
+          <h1 className="text-center text-3xl font-bold">Extras</h1>
           {/* <button
             onClick={() => router.push("/vendorMemo")}
             className="inline-block w-full rounded-lg bg-black px-5 py-3 font-medium text-white sm:w-auto"
@@ -68,10 +65,13 @@ export default function Page() {
         {/* create cards for navigating to different pages  */}
         <div className="flex justify-evenly">
           <div>
-            <button onClick={handleLateClick} className="p-4 border border-gray-200 rounded w-64 bg-white hover:bg-gray-50 hover:border-b-4 hover:border-b-blue-500 flex items-center active:bg-gray-100">
-              {" "}
-              <div className="flex justify-center items-center text-gray-500 mr-4">
-                {" "}
+            <button
+              onClick={handleLateClick}
+              className="flex w-64 items-center rounded border border-gray-200 bg-white p-4 hover:border-b-4 hover:border-b-blue-500 hover:bg-gray-50 active:bg-gray-100"
+            >
+              {' '}
+              <div className="mr-4 flex items-center justify-center text-gray-500">
+                {' '}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6"
@@ -79,31 +79,30 @@ export default function Page() {
                   viewBox="0 0 24 24"
                   stroke="currentColor"
                 >
-                  {" "}
+                  {' '}
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth="2"
                     d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                  />{" "}
-                </svg>{" "}
-              </div>{" "}
-              <h1 className="font-bold text-gray-700 text-sm">
+                  />{' '}
+                </svg>{' '}
+              </div>{' '}
+              <h1 className="text-sm font-bold text-gray-700">
                 Add Late Entries
-              </h1>{" "}
+              </h1>{' '}
             </button>
           </div>
-          
 
           {/* Button to refresh materialised view */}
           <div>
             <button
               onClick={handleRefresh}
-              className="p-4 border border-gray-200 rounded w-64 bg-white hover:bg-gray-50 hover:border-b-4 hover:border-b-blue-500 flex items-center active:bg-gray-100"
+              className="flex w-64 items-center rounded border border-gray-200 bg-white p-4 hover:border-b-4 hover:border-b-blue-500 hover:bg-gray-50 active:bg-gray-100"
             >
-              {" "}
-              <div className="flex justify-center items-center text-gray-500 mr-4">
-                {" "}
+              {' '}
+              <div className="mr-4 flex items-center justify-center text-gray-500">
+                {' '}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6"
@@ -111,21 +110,20 @@ export default function Page() {
                   viewBox="0 0 24 24"
                   stroke="currentColor"
                 >
-                  {" "}
+                  {' '}
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth="2"
                     d="M5 13l4 4L19 7"
-                  />{" "}
-                </svg>{" "}
-              </div>{" "}
-              <h1 className="font-bold text-gray-700 text-sm">
+                  />{' '}
+                </svg>{' '}
+              </div>{' '}
+              <h1 className="text-sm font-bold text-gray-700">
                 Refresh Daily Rate
-              </h1>{" "}
+              </h1>{' '}
             </button>
-
-            </div>
+          </div>
         </div>
       </div>
     </div>

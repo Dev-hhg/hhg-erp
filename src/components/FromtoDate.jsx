@@ -1,8 +1,8 @@
 import React from 'react';
 
 export default function FromtoDate({ from, setFrom, to, setTo }) {
-  const today = new Date().toISOString().split("T")[0];
-  const minimumDate = "2023-10-15";
+  const today = new Date().toISOString().split('T')[0];
+  const minimumDate = '2023-10-15';
 
   const handleFromChange = (event) => {
     const newFrom = event.target.value;
@@ -23,10 +23,8 @@ export default function FromtoDate({ from, setFrom, to, setTo }) {
   };
 
   return (
-    <div className="flex justify-center items-center space-x-4 h-9 p-2 mb-4">
-      <div className="mr-4">
-        From
-      </div>
+    <div className="mb-4 flex h-9 items-center justify-center space-x-4 p-2">
+      <div className="mr-4">From</div>
       <input
         id="from"
         value={from}
@@ -36,9 +34,7 @@ export default function FromtoDate({ from, setFrom, to, setTo }) {
         onChange={handleFromChange}
         className="rounded-lg border-gray-200 p-3 text-sm hover:cursor-pointer"
       />
-      <div className="mr-4">
-        To
-      </div>
+      <div className="mr-4">To</div>
       <input
         id="to"
         value={to}

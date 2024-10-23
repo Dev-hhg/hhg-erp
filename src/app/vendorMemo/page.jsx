@@ -1,43 +1,44 @@
-"use client";
+'use client';
 import {
   getEntriesVmDataByDateVendor,
   getRefundByDateVendor,
   updateVmData,
-} from "@/serverComponents/dbFunctions";
-import VendorSelect from "@/components/VendorSelect";
-import { useEffect, useState, useContext } from "react";
-import DateSection from "@/components/DateSection";
-import Alert from "@/components/Alert";
-import { VendorContext } from "../Context/vendorcontext";
-import { set } from "react-hook-form";
-import { useSession } from "next-auth/react";
-import Loader from "@/components/Loader";
-
+} from '@/serverComponents/dbFunctions';
+import VendorSelect from '@/components/VendorSelect';
+import { useEffect, useState, useContext } from 'react';
+import DateSection from '@/components/DateSection';
+import Alert from '@/components/Alert';
+import { VendorContext } from '../Context/vendorcontext';
+import { set } from 'react-hook-form';
+import { useSession } from 'next-auth/react';
+import Loader from '@/components/Loader';
 
 export default function VendorMemo() {
   const { data: session, status } = useSession();
 
-	if (status === "authenticated") {
-		console.log("Session", session);
-		if(session?.user?.role === "guest" || session?.user?.role === "user"){
-			return (
-				<div className="flex justify-center items-center h-screen">
-					<h1 className="text-3xl text-white">You are not authorized to view this page :)</h1>
-				</div>
-			);
-		}
-	}
+  if (status === 'authenticated') {
+    console.log('Session', session);
+    if (session?.user?.role === 'guest' || session?.user?.role === 'user') {
+      return (
+        <div className="flex h-screen items-center justify-center">
+          <h1 className="text-3xl text-white">
+            You are not authorized to view this page :)
+          </h1>
+        </div>
+      );
+    }
+  }
   const { selectedVMNDate, setSelectedVMNDate } = useContext(VendorContext);
-  const today = new Date().toISOString().split("T")[0];
+  const today = new Date().toISOString().split('T')[0];
   const [records, setRecords] = useState([]);
   const [vendor, setVendor] = useState(selectedVMNDate.vendorname);
   const [date, setDate] = useState(today);
   const [count, setCount] = useState(0);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [searchClicked, setSearchClicked] = useState(false);
   const [tempRecords, setTempRecords] = useState([]);
   if (
-    selectedVMNDate.date !== "" &&
+    selectedVMNDate.date !== '' &&
     date !== selectedVMNDate.date &&
     count === 0
   ) {
@@ -56,8 +57,8 @@ export default function VendorMemo() {
   const [loadingVendors, setLoadingVendors] = useState(true);
   const [alert, setAlert] = useState({
     state: false,
-    type: "",
-    message: "",
+    type: '',
+    message: '',
   });
   const [loading, setLoading] = useState(false);
 
@@ -75,9 +76,9 @@ export default function VendorMemo() {
       });
       try {
         const data = await getEntriesVmDataByDateVendor({ date, vendor });
-        console.log("data", data);
+        console.log('data', data);
         const refundData = await getRefundByDateVendor({ date, vendor });
-        console.log("refundData", refundData);
+        console.log('refundData', refundData);
 
         if (refundData.length !== 0) {
           setTotal((prev) => ({
@@ -106,12 +107,12 @@ export default function VendorMemo() {
           }));
         }
         setRecords(data);
-        
-      setTempRecords(data);
+
+        setTempRecords(data);
       } catch (error) {
         setAlert({
           state: true,
-          type: "danger",
+          type: 'danger',
           message: error.message,
         });
       } finally {
@@ -119,7 +120,7 @@ export default function VendorMemo() {
       }
     }
 
-    if (vendor !== "") {
+    if (vendor !== '') {
       getData();
     }
   }, [date, vendor]);
@@ -142,9 +143,8 @@ export default function VendorMemo() {
       commision: Number(tempCommision),
     }));
 
-    console.log("records", records);
+    console.log('records', records);
   }, [records]);
-
 
   const handleVendorChange = (e) => {
     const { value } = e.target;
@@ -165,22 +165,22 @@ export default function VendorMemo() {
     if (hasZeroPayable) {
       setAlert({
         state: true,
-        type: "danger",
+        type: 'danger',
         message:
-          "कृपया सर्व रेकॉर्डमध्ये देय रक्कम 0 पेक्षा जास्त असल्याची खात्री करा.",
+          'कृपया सर्व रेकॉर्डमध्ये देय रक्कम 0 पेक्षा जास्त असल्याची खात्री करा.',
       });
       return; // Exit early if any payable is  0
     }
 
     try {
       setLoading(true);
-      console.log("final", records);
+      console.log('final', records);
 
       const existingData = await getEntriesVmDataByDateVendor({
         date,
         vendor,
       });
-      console.log("existingData", existingData);
+      console.log('existingData', existingData);
       // differentiate between updates and addiyions
       const updates = [];
       const additions = [];
@@ -216,13 +216,13 @@ export default function VendorMemo() {
       setAlert({
         state: true,
         message: res.message,
-        type: "success",
+        type: 'success',
       });
       // added markvmdata in the query itself
     } catch (error) {
       setAlert({
         state: true,
-        type: "danger",
+        type: 'danger',
         message: error,
       });
     } finally {
@@ -242,21 +242,21 @@ export default function VendorMemo() {
 
   const handleChange = (e) => {
     const { value } = e.target;
-    console.log("Searching val",value);
+    console.log('Searching val', value);
     setSearchTerm(value);
-  }
+  };
 
   useEffect(() => {
-    if (searchTerm.trim()!== '') {
-      const filteredRecords = records.filter(record =>
-        Object.values(record).some(val =>
+    if (searchTerm.trim() !== '') {
+      const filteredRecords = records.filter((record) =>
+        Object.values(record).some((val) =>
           String(val).toLowerCase().includes(searchTerm.toLowerCase())
         )
       );
       setRecords(filteredRecords);
     } else {
       // Reset records if search term is cleared
-      console.log("tempRecords");
+      console.log('tempRecords');
       setRecords(tempRecords);
     }
     // if search term is emtpy then reset the records
@@ -264,11 +264,10 @@ export default function VendorMemo() {
     //   setRecords(tempRecords);
     // }
   }, [searchTerm]); // Depend on searchTerm to re-run this effect
-  
 
   return (
     <div className="p-14">
-      <div className="relative rounded-lg bg-white p-8 shadow-lg lg:col-span-3 lg:p-12 ">
+      <div className="relative rounded-lg bg-white p-8 shadow-lg lg:col-span-3 lg:p-12">
         {alert.state && (
           <Alert
             message={alert.message}
@@ -277,14 +276,12 @@ export default function VendorMemo() {
             timer={5000}
           />
         )}
-        {loading && (
-          <Loader />
-        )}
-        <div className={loading ? "opacity-20" : ""}>
+        {loading && <Loader />}
+        <div className={loading ? 'opacity-20' : ''}>
           <DateSection date={date} setDate={setDate} />
         </div>
-        <div className="flex flex-row justify-start space-x-4 mt-4">
-          <div className={`my-6 w-3/12 ${loading ? "opacity-20" : ""}`}>
+        <div className="mt-4 flex flex-row justify-start space-x-4">
+          <div className={`my-6 w-3/12 ${loading ? 'opacity-20' : ''}`}>
             <VendorSelect
               handleChange={handleVendorChange}
               value={vendor}
@@ -292,13 +289,13 @@ export default function VendorMemo() {
               loading={loadingVendors}
             />
           </div>
-          <div className="flex space-x-4 ">
+          <div className="flex space-x-4">
             <div className="flex items-center">
               <label className="sr-only" htmlFor="farmerName">
                 farmerName
               </label>
               <input
-                className=" rounded-lg border-gray-200 p-3 text-sm"
+                className="rounded-lg border-gray-200 p-3 text-sm"
                 placeholder="Search by name"
                 type="text"
                 id="searchFarmer"
@@ -309,27 +306,26 @@ export default function VendorMemo() {
                 // required
               />
             </div>
-            
           </div>
         </div>
         {records.length != 0 && (
           <form
             className={`flex flex-col justify-center ${
-              loading ? "opacity-20" : ""
+              loading ? 'opacity-20' : ''
             }`}
             onSubmit={handleFormSubmit}
           >
-            <table className="min-w-full divide-y-2  divide-gray-200 bg-white text-sm mt-5 hidden md:block">
+            <table className="mt-5 hidden min-w-full divide-y-2 divide-gray-200 bg-white text-sm md:block">
               <thead className="">
                 <tr>
                   <th className="whitespace-nowrap px-8 py-2 font-medium text-gray-900">
                     Sr. No.
                   </th>
                   <th className="whitespace-nowrap px-8 py-2 font-medium text-gray-900">
-                   Amount Recievable
+                    Amount Recievable
                   </th>
                   <th className="whitespace-nowrap px-8 py-2 font-medium text-gray-900">
-                  farmerName
+                    farmerName
                   </th>
 
                   <th className="whitespace-nowrap px-8 py-2 font-medium text-gray-900">
@@ -353,27 +349,27 @@ export default function VendorMemo() {
                 {rows.length !== 0 && rows}
                 {rows.length !== 0 && (
                   <tr>
-                    <td className="whitespace-nowrap text-center py-4 font-semibold text-gray-900">
-                     Total
+                    <td className="whitespace-nowrap py-4 text-center font-semibold text-gray-900">
+                      Total
                     </td>
-                    <td className="whitespace-nowrap text-center py-4 font-semibold text-gray-900 ">
-                      ₹{total.payable.toLocaleString("en-IN")}/-
+                    <td className="whitespace-nowrap py-4 text-center font-semibold text-gray-900">
+                      ₹{total.payable.toLocaleString('en-IN')}/-
                     </td>
                     <td
-                      className="whitespace-nowrap text-center py-4 font-semibold text-gray-900"
+                      className="whitespace-nowrap py-4 text-center font-semibold text-gray-900"
                       colSpan={2}
                     ></td>
 
-                    <td className="whitespace-nowrap text-center py-4 font-semibold text-gray-900 ">
+                    <td className="whitespace-nowrap py-4 text-center font-semibold text-gray-900">
                       {total.quantity}
                     </td>
-                    <td className="whitespace-nowrap text-center py-4 font-semibold text-gray-900 ">
+                    <td className="whitespace-nowrap py-4 text-center font-semibold text-gray-900">
                       {total.weight}
                     </td>
-                    <td className="whitespace-nowrap text-center py-4 font-semibold text-gray-900 ">
+                    <td className="whitespace-nowrap py-4 text-center font-semibold text-gray-900">
                       {total.rate}
                     </td>
-                    <td className="whitespace-nowrap text-center py-4 font-semibold text-gray-900 ">
+                    <td className="whitespace-nowrap py-4 text-center font-semibold text-gray-900">
                       {total.commision}
                     </td>
                   </tr>
@@ -382,15 +378,15 @@ export default function VendorMemo() {
             </table>
             {rows.length !== 0 && (
               <div>
-                <div className="flex items-center my-2 ">
+                <div className="my-2 flex items-center">
                   <label
                     htmlFor="refund"
-                    className="font-medium text-sm text-gray-900 mx-5"
+                    className="mx-5 text-sm font-medium text-gray-900"
                   >
                     Refund :
                   </label>
                   <input
-                    className="w-24 border-0 border-b appearance-none focus:outline-none focus:ring-0 border-gray-200 px-2 py-1 text-center text-sm  "
+                    className="w-24 appearance-none border-0 border-b border-gray-200 px-2 py-1 text-center text-sm focus:outline-none focus:ring-0"
                     type="number"
                     id="refund"
                     name="refund"
@@ -401,19 +397,19 @@ export default function VendorMemo() {
                     required
                   />
                 </div>
-                <div className="flex items-center my-2 text-lg ">
+                <div className="my-2 flex items-center text-lg">
                   <label
                     htmlFor="refund"
-                    className="font-medium  text-gray-900 mx-5"
+                    className="mx-5 font-medium text-gray-900"
                   >
                     Total Receivable :
-                    <span className=" px-4 font-semibold text-gray-900 ">
+                    <span className="px-4 font-semibold text-gray-900">
                       ₹
                       {(
                         Number(total.payable) +
                         Number(total.commision) +
                         Number(total.refund)
-                      ).toLocaleString("en-IN")}
+                      ).toLocaleString('en-IN')}
                       /-
                     </span>
                   </label>
@@ -421,11 +417,11 @@ export default function VendorMemo() {
               </div>
             )}
             {records.length !== 0 && (
-              <div className="flex mt-8 justify-center items-center">
+              <div className="mt-8 flex items-center justify-center">
                 <button
                   type="submit"
                   name="save"
-                  className={`inline-block w-full rounded-lg bg-black px-10 py-3 mx-10 font-medium text-white sm:w-auto`}
+                  className={`mx-10 inline-block w-full rounded-lg bg-black px-10 py-3 font-medium text-white sm:w-auto`}
                 >
                   Save
                 </button>
@@ -474,13 +470,13 @@ const Row = ({
 
   return (
     <tr>
-      <td className="whitespace-nowrap text-center  py-2 font-medium text-gray-700">
+      <td className="whitespace-nowrap py-2 text-center font-medium text-gray-700">
         {index + 1}
       </td>
 
-      <td className="whitespace-nowrap text-center py-2  text-gray-700">
+      <td className="whitespace-nowrap py-2 text-center text-gray-700">
         <input
-          className="w-14 border-0 border-b appearance-none focus:outline-none focus:ring-0 border-gray-200 px-2 py-1 text-center text-sm  "
+          className="w-14 appearance-none border-0 border-b border-gray-200 px-2 py-1 text-center text-sm focus:outline-none focus:ring-0"
           step="any"
           type="number"
           name="payable"
@@ -492,23 +488,23 @@ const Row = ({
           required
         />
       </td>
-      <td className="whitespace-nowrap text-center py-2 text-gray-700">
+      <td className="whitespace-nowrap py-2 text-center text-gray-700">
         {farmername}
       </td>
 
-      <td className="whitespace-nowrap text-center py-2 text-gray-700">
+      <td className="whitespace-nowrap py-2 text-center text-gray-700">
         {item}
       </td>
-      <td className="whitespace-nowrap text-center py-2 text-gray-700">
+      <td className="whitespace-nowrap py-2 text-center text-gray-700">
         {quantity}
       </td>
-      <td className="whitespace-nowrap text-center py-2 text-gray-700">
+      <td className="whitespace-nowrap py-2 text-center text-gray-700">
         {weight}
       </td>
 
-      <td className="whitespace-nowrap text-center py-2  text-gray-700">
+      <td className="whitespace-nowrap py-2 text-center text-gray-700">
         <input
-          className="w-14 border-0 border-b appearance-none focus:outline-none focus:ring-0 border-gray-200 px-2 py-1 text-center text-sm  "
+          className="w-14 appearance-none border-0 border-b border-gray-200 px-2 py-1 text-center text-sm focus:outline-none focus:ring-0"
           step="any"
           type="number"
           name="rate"
@@ -520,9 +516,9 @@ const Row = ({
           required
         />
       </td>
-      <td className="whitespace-nowrap text-center py-2  text-gray-700">
+      <td className="whitespace-nowrap py-2 text-center text-gray-700">
         <input
-          className="w-14 border-0 border-b appearance-none focus:outline-none focus:ring-0 border-gray-200 px-2 py-1 text-center text-sm  "
+          className="w-14 appearance-none border-0 border-b border-gray-200 px-2 py-1 text-center text-sm focus:outline-none focus:ring-0"
           step="any"
           type="number"
           name="commision"

@@ -1,21 +1,21 @@
-"use client";
-import Alert from "@/components/Alert";
-import DateSection from "@/components/DateSection";
+'use client';
+import Alert from '@/components/Alert';
+import DateSection from '@/components/DateSection';
 import {
   getTodayEntries,
   deleteEntry,
   updateEntry,
-} from "@/serverComponents/dbFunctions";
-import { useState, useEffect } from "react";
-import VendorSelect from "@/components/VendorSelect";
-import { set } from "react-hook-form";
-import { useSession } from "next-auth/react";
+} from '@/serverComponents/dbFunctions';
+import { useState, useEffect } from 'react';
+import VendorSelect from '@/components/VendorSelect';
+import { set } from 'react-hook-form';
+import { useSession } from 'next-auth/react';
 
 function Page() {
   const { data: session, status } = useSession();
   const [entries, setEntries] = useState([]);
-  const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
-  const today = new Date().toISOString().split("T")[0];
+  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+  const today = new Date().toISOString().split('T')[0];
   const [error, setError] = useState(false);
   const [editClicked, setEditClicked] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -27,18 +27,18 @@ function Page() {
   const [allowed, setAllowed] = useState(false);
 
   const [data, setData] = useState({
-    farmerName: "",
-    mobileNumber: "",
-    vendorName: "",
-    item: "",
-    quantity: "",
-    weight: "",
-    transactionId: "",
+    farmerName: '',
+    mobileNumber: '',
+    vendorName: '',
+    item: '',
+    quantity: '',
+    weight: '',
+    transactionId: '',
   });
   const [alert, setAlert] = useState({
     state: false,
-    type: "",
-    message: "",
+    type: '',
+    message: '',
   });
   const [total, setTotal] = useState({
     weight: 0,
@@ -46,22 +46,21 @@ function Page() {
   });
 
   useEffect(() => {
-    if (status === "authenticated") {
-      console.log("Session", session);
-      if (session?.user?.role === "guest" || session?.user?.role === "user") {
+    if (status === 'authenticated') {
+      console.log('Session', session);
+      if (session?.user?.role === 'guest' || session?.user?.role === 'user') {
         setAllowed(false);
-      }else{
+      } else {
         setAllowed(true);
       }
     }
   }, [status, session]);
 
-
   useEffect(() => {
     setLoading(true);
     function getDayName(dateStr) {
       var date = new Date(dateStr);
-      return date.toLocaleDateString("en-IN", { weekday: "long" });
+      return date.toLocaleDateString('en-IN', { weekday: 'long' });
     }
     getTodayEntries(date)
       .then((data) => {
@@ -93,18 +92,18 @@ function Page() {
         setLoading(false);
       })
       .catch((error) => {
-        console.error("Error fetching data: ", error);
+        console.error('Error fetching data: ', error);
         setError(true);
       });
   }, [date]);
 
   function handleDelete(transactionId) {
-    if (window.confirm("Are you sure you want to delete this entry?")) {
+    if (window.confirm('Are you sure you want to delete this entry?')) {
       deleteEntry({ transactionId: transactionId }).then(() => {
         setAlert({
           state: true,
-          type: "success",
-          message: "Entry deleted successfully!",
+          type: 'success',
+          message: 'Entry deleted successfully!',
         });
         setEntries(
           entries.filter((entry) => entry.transactionid !== transactionId)
@@ -161,21 +160,21 @@ function Page() {
       updateEntry(trimmedData);
       setAlert({
         state: true,
-        type: "success",
-        message: "Entry Updated Successfully",
+        type: 'success',
+        message: 'Entry Updated Successfully',
       });
       setData({
-        farmerName: "",
-        mobileNumber: "",
-        vendorName: "",
-        item: "",
-        quantity: "",
-        weight: "",
+        farmerName: '',
+        mobileNumber: '',
+        vendorName: '',
+        item: '',
+        quantity: '',
+        weight: '',
       });
     } catch (error) {
       setAlert({
         state: true,
-        type: "danger",
+        type: 'danger',
         message: error,
       });
     } finally {
@@ -233,9 +232,9 @@ function Page() {
            <h4 style="text-align: center; margin-top: 0px; margin-bottom: 0px; font-size: 18px;">।। H ।।</h4>
            <h2 style="text-align: center; margin-top: 0px; margin-bottom: 0px; font-size: smaller;">
            <span id="date">${day}, ${date
-      .split("-")
-      .reverse()
-      .join("-")} Entries =>
+             .split('-')
+             .reverse()
+             .join('-')} Entries =>
                 ${total.quantity} Quantity</span></h2>
    
           <table>
@@ -264,7 +263,7 @@ function Page() {
                 </tr>
               `
                 )
-                .join("")}
+                .join('')}
               <tr>
                 <td>Total</td>
                 <td></td>
@@ -273,7 +272,7 @@ function Page() {
                 <td style="font-weight: bold">${total.quantity}</td>
                 <td style="font-weight: bold">${Number(
                   total.weight
-                ).toLocaleString("en-IN")} Kg</td>
+                ).toLocaleString('en-IN')} Kg</td>
               </tr>
             </tbody>
           </table>
@@ -290,18 +289,18 @@ function Page() {
   }
   const toast = (
     <div>
-      <form autoComplete="off" onSubmit={handleSubmit} className={`space-y-4 `}>
-        <h1 className="text-2xl align-middle font-bold text-white">
+      <form autoComplete="off" onSubmit={handleSubmit} className={`space-y-4`}>
+        <h1 className="align-middle text-2xl font-bold text-white">
           Editing entry for farmer id: {data.farmerid} with UID: {data.uid}
         </h1>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label className="sr-only" htmlFor="farmerName">
-            farmerName
+              farmerName
             </label>
             <input
-              className="w-full rounded-lg border-gray-200 p-3 text-sm e-disable"
+              className="e-disable w-full rounded-lg border-gray-200 p-3 text-sm"
               placeholder="farmerName "
               type="text"
               id="farmerName"
@@ -314,10 +313,10 @@ function Page() {
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <label className="sr-only" htmlFor="mobileNumber">
-          mobileNumber
+            mobileNumber
           </label>
           <input
-            className=" w-full rounded-lg border-gray-200 p-3 text-sm "
+            className="w-full rounded-lg border-gray-200 p-3 text-sm"
             placeholder="mobileNumber"
             type="number"
             id="mobileNumber"
@@ -329,7 +328,7 @@ function Page() {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label className="sr-only" htmlFor="vendorName">
-            vendorName
+              vendorName
             </label>
             <VendorSelect
               handleChange={handleChange}
@@ -342,7 +341,7 @@ function Page() {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label className="sr-only" htmlFor="item">
-            item
+              item
             </label>
             <input
               className="w-full rounded-lg border-gray-200 p-3 text-sm"
@@ -359,7 +358,7 @@ function Page() {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label className="sr-only" htmlFor="quantity">
-            quantity
+              quantity
             </label>
             <input
               className="w-full rounded-lg border-gray-200 p-3 text-sm"
@@ -377,7 +376,7 @@ function Page() {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label className="sr-only" htmlFor="weight">
-            weight
+              weight
             </label>
             <input
               className="w-full rounded-lg border-gray-200 p-3 text-sm"
@@ -398,8 +397,8 @@ function Page() {
             type="submit"
             className={`inline-block w-full rounded-lg bg-black px-5 py-3 font-medium text-white sm:w-auto ${
               loading
-                ? "cursor-not-allowed opacity-50"
-                : "cursor-pointer hover:bg-gray-900"
+                ? 'cursor-not-allowed opacity-50'
+                : 'cursor-pointer hover:bg-gray-900'
             }`}
           >
             Update Entry
@@ -415,12 +414,12 @@ function Page() {
     const check = !searchClicked;
     if (check) {
       setTempEntries(entries);
-      const searchFarmer = document.getElementById("searchFarmer").value;
-      if (searchFarmer === "") {
+      const searchFarmer = document.getElementById('searchFarmer').value;
+      if (searchFarmer === '') {
         setAlert({
           state: true,
-          type: "danger",
-          message: "Please enter the name of the farmer to search",
+          type: 'danger',
+          message: 'Please enter the name of the farmer to search',
         });
         setSearchClicked(false);
         return;
@@ -434,10 +433,10 @@ function Page() {
         setLoading(false);
       }
     } else {
-      console.log("Seacrhc should clear", searchClicked);
+      console.log('Seacrhc should clear', searchClicked);
       setEntries(tempEntries);
       //make input field empty
-      document.getElementById("searchFarmer").value = "";
+      document.getElementById('searchFarmer').value = '';
     }
   }
 
@@ -452,8 +451,8 @@ function Page() {
     if (result.length === 0) {
       setAlert({
         state: true,
-        type: "danger",
-        message: "No entries found for the name",
+        type: 'danger',
+        message: 'No entries found for the name',
       });
       return;
     } else {
@@ -466,8 +465,8 @@ function Page() {
     if (result.length === 0) {
       setAlert({
         state: true,
-        type: "danger",
-        message: "No entries found for the adhaar number",
+        type: 'danger',
+        message: 'No entries found for the adhaar number',
       });
       return;
     } else {
@@ -477,25 +476,23 @@ function Page() {
 
   function convertTime(entryTime) {
     // Parse the timestamp string manually
-    
+
     const date = new Date(entryTime);
-    
+
     // Set the timezone offset to IST (+05:30)
     date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
-    
+
     // Subtract 5 hours and 30 minutes
     date.setHours(date.getHours() - 11);
-    
+
     // Format the result to show only time in Indian English locale
     const options = {
       hour: 'numeric',
       minute: 'numeric',
       hour12: true,
-
     };
     return date.toLocaleTimeString('en-IN', options);
   }
-  
 
   return (
     <div className="p-2 md:p-14 lg:p-14">
@@ -511,22 +508,22 @@ function Page() {
       {editClicked ? (
         toast
       ) : (
-        <div className=" overflow-x-auto rounded-lg bg-white p-8 shadow-lg lg:col-span-3 lg:p-8 ">
+        <div className="overflow-x-auto rounded-lg bg-white p-8 shadow-lg lg:col-span-3 lg:p-8">
           <div className="flex flex-col justify-between">
             <DateSection date={date} setDate={setDate} />
-            <div className="flex flex-row justify-center items-center space-x-6 mt-4">
-              <h1 className="  text-xl font-bold text-center">
-                Entries for {day}, {date.split("-").reverse().join("-")} {" "}
+            <div className="mt-4 flex flex-row items-center justify-center space-x-6">
+              <h1 className="text-center text-xl font-bold">
+                Entries for {day}, {date.split('-').reverse().join('-')}{' '}
                 {total.quantity} Bags
               </h1>
             </div>
-            <div className="flex space-x-4 mt-1">
+            <div className="mt-1 flex space-x-4">
               <div className="flex items-center">
                 <label className="sr-only" htmlFor="farmerName">
                   farmerName
                 </label>
                 <input
-                  className=" rounded-lg border-gray-200 p-3 text-sm"
+                  className="rounded-lg border-gray-200 p-3 text-sm"
                   placeholder="Search by name or adhaar number"
                   type="text"
                   id="searchFarmer"
@@ -539,12 +536,12 @@ function Page() {
               </div>
               <button
                 onClick={handleSearch}
-                className={`inline-flex items-center rounded-lg bg-black py-2 px-4 font-medium text-white hover:bg-gray-800 `}
+                className={`inline-flex items-center rounded-lg bg-black px-4 py-2 font-medium text-white hover:bg-gray-800`}
                 disabled={loading}
               >
                 {!searchClicked && (
                   <svg
-                    class="w-6 h-6 text-gray-800 dark:text-white"
+                    class="h-6 w-6 text-gray-800 dark:text-white"
                     aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -574,18 +571,18 @@ function Page() {
                     />
                   </svg>
                 )}
-                <span>{searchClicked ? "Clear Search" : "Search"}</span>
+                <span>{searchClicked ? 'Clear Search' : 'Search'}</span>
               </button>
 
               <button
                 onClick={printPDF}
-                className={`inline-flex items-center rounded-lg bg-black py-2 px-4 hover:bg-gray-800 font-medium text-white ${
-                  print ? "opacity-50" : ""
+                className={`inline-flex items-center rounded-lg bg-black px-4 py-2 font-medium text-white hover:bg-gray-800 ${
+                  print ? 'opacity-50' : ''
                 }`}
                 disabled={print}
               >
                 <svg
-                  class="w-6 h-6 text-gray-800 dark:text-white"
+                  class="h-6 w-6 text-gray-800 dark:text-white"
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="currentColor"
@@ -601,10 +598,10 @@ function Page() {
               </button>
             </div>
             {loading && (
-              <div className="absolute -translate-x-1/2 -translate-y-1/2 top-2/4 left-1/2">
+              <div className="absolute left-1/2 top-2/4 -translate-x-1/2 -translate-y-1/2">
                 <svg
                   aria-hidden="true"
-                  className="inline w-10 h-10text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                  className="h-10text-gray-200 inline w-10 animate-spin fill-blue-600 dark:text-gray-600"
                   viewBox="0 0 100 101"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
@@ -622,38 +619,38 @@ function Page() {
             )}
             <form
               className={`flex items-center justify-center ${
-                loading ? "opacity-20" : ""
+                loading ? 'opacity-20' : ''
               }`}
             >
-              <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm mt-5">
+              <table className="mt-5 min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
                 <thead className="">
                   <tr className="bg-gray-300">
-                    <th className="whitespace-nowrap px-1 md:px-2 lg:px-2 py-2 font-bold text-gray-900">
+                    <th className="whitespace-nowrap px-1 py-2 font-bold text-gray-900 md:px-2 lg:px-2">
                       Sr. No.
                     </th>
-                    <th className="whitespace-nowrap px-1 md:px-4 lg:px-4 py-2 font-bold text-gray-900">
+                    <th className="whitespace-nowrap px-1 py-2 font-bold text-gray-900 md:px-4 lg:px-4">
                       Farmer Uid
                     </th>
-                    <th className="whitespace-nowrap px-1 md:px-12 lg:px-12 py-2 font-bold text-gray-900">
+                    <th className="whitespace-nowrap px-1 py-2 font-bold text-gray-900 md:px-12 lg:px-12">
                       Farmer Name
                     </th>
-                    <th className="whitespace-nowrap px-1 md:px-12 lg:px-12 py-2 font-bold text-gray-900">
+                    <th className="whitespace-nowrap px-1 py-2 font-bold text-gray-900 md:px-12 lg:px-12">
                       Item
                     </th>
 
-                    <th className="whitespace-nowrap px-1 md:px-12 lg:px-12 py-2 font-bold text-gray-900">
+                    <th className="whitespace-nowrap px-1 py-2 font-bold text-gray-900 md:px-12 lg:px-12">
                       Vendor Name
                     </th>
-                    <th className="whitespace-nowrap px-1 md:px-12 lg:px-12 py-2 font-bold text-gray-900">
+                    <th className="whitespace-nowrap px-1 py-2 font-bold text-gray-900 md:px-12 lg:px-12">
                       Quantity
                     </th>
-                    <th className="whitespace-nowrap px-1 md:px-12 lg:px-12 py-2 font-bold text-gray-900">
+                    <th className="whitespace-nowrap px-1 py-2 font-bold text-gray-900 md:px-12 lg:px-12">
                       Weight
                     </th>
-                    <th className="whitespace-nowrap px-1 md:px-12 lg:px-12 py-2 font-bold text-gray-900">
+                    <th className="whitespace-nowrap px-1 py-2 font-bold text-gray-900 md:px-12 lg:px-12">
                       Time
                     </th>
-                    <th className="whitespace-nowrap px-1 md:px-12 lg:px-12 py-2 font-bold text-gray-900">
+                    <th className="whitespace-nowrap px-1 py-2 font-bold text-gray-900 md:px-12 lg:px-12">
                       Actions
                     </th>
                   </tr>
@@ -661,46 +658,46 @@ function Page() {
                 <tbody className="divide-y divide-gray-200">
                   {entries.map((entry, index) => (
                     <tr key={entry.transactionid}>
-                      <td className="whitespace-nowrap text-center py-1 text-gray-700">
+                      <td className="whitespace-nowrap py-1 text-center text-gray-700">
                         {index + 1}
                       </td>
-                      <td className="whitespace-nowrap text-center py-1 text-gray-700">
+                      <td className="whitespace-nowrap py-1 text-center text-gray-700">
                         {entry.uid}
                       </td>
-                      <td className="whitespace-nowrap text-center py-1 text-gray-700">
+                      <td className="whitespace-nowrap py-1 text-center text-gray-700">
                         {entry.farmername}
                       </td>
-                      <td className="whitespace-nowrap text-center py-1 text-gray-700">
+                      <td className="whitespace-nowrap py-1 text-center text-gray-700">
                         {entry.item}
                       </td>
-                      <td className="whitespace-nowrap text-center py-1 text-gray-700">
+                      <td className="whitespace-nowrap py-1 text-center text-gray-700">
                         {entry.vendorname}
                       </td>
-                      <td className="whitespace-nowrap text-center py-1 text-gray-700">
+                      <td className="whitespace-nowrap py-1 text-center text-gray-700">
                         {entry.quantity}
                       </td>
-                      <td className="whitespace-nowrap text-center py-1 text-gray-700">
+                      <td className="whitespace-nowrap py-1 text-center text-gray-700">
                         {entry.weight}
                       </td>
-                      <td className="whitespace-nowrap text-center py-1 text-gray-700">
+                      <td className="whitespace-nowrap py-1 text-center text-gray-700">
                         {convertTime(entry.entrytime)}
                       </td>
-                      <td className="whitespace-nowrap text-center py-1 text-gray-700 space-x-1">
+                      <td className="space-x-1 whitespace-nowrap py-1 text-center text-gray-700">
                         <button
                           title="Delete entry"
                           onClick={(event) => {
                             event.preventDefault();
                             handleDelete(entry.transactionid);
                           }}
-                          className={`bg-red-500 text-white rounded-lg p-2 ${
+                          className={`rounded-lg bg-red-500 p-2 text-white ${
                             date !== today || !allowed
-                              ? "cursor-not-allowed opacity-50"
-                              : "cursor-pointer hover:bg-red-900"
+                              ? 'cursor-not-allowed opacity-50'
+                              : 'cursor-pointer hover:bg-red-900'
                           }`}
                           disabled={!allowed}
                         >
                           <svg
-                            className="w-6 h-6 text-gray-800 dark:text-white"
+                            className="h-6 w-6 text-gray-800 dark:text-white"
                             aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg"
                             fill="currentColor"
@@ -711,7 +708,7 @@ function Page() {
                         </button>
                         <button
                           key="editButton"
-                          className={`"ml-1 bg-green-500 text-white rounded-lg p-2 ${!allowed ? "cursor-not-allowed opacity-50" : "cursor-pointer hover:bg-green-900"}"`}
+                          className={`"ml-1 rounded-lg bg-green-500 p-2 text-white ${!allowed ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:bg-green-900'}"`}
                           onClick={(event) => {
                             event.preventDefault();
                             handleEdit(entry.transactionid);
@@ -719,7 +716,7 @@ function Page() {
                           disabled={!allowed}
                         >
                           <svg
-                            className="w-6 h-6 text-gray-800 dark:text-white"
+                            className="h-6 w-6 text-gray-800 dark:text-white"
                             aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg"
                             fill="currentColor"
@@ -732,17 +729,17 @@ function Page() {
                     </tr>
                   ))}
                   <tr>
-                    <td className="whitespace-nowrap text-center py-4 font-semibold text-gray-900">
+                    <td className="whitespace-nowrap py-4 text-center font-semibold text-gray-900">
                       Total
                     </td>
                     <td
-                      className="whitespace-nowrap text-center py-4 font-semibold text-gray-900"
+                      className="whitespace-nowrap py-4 text-center font-semibold text-gray-900"
                       colSpan="4"
                     ></td>
-                    <td className="whitespace-nowrap text-center py-4 font-semibold text-gray-900 ">
+                    <td className="whitespace-nowrap py-4 text-center font-semibold text-gray-900">
                       {total.quantity}
                     </td>
-                    <td className="whitespace-nowrap text-center py-4 font-semibold text-gray-900 ">
+                    <td className="whitespace-nowrap py-4 text-center font-semibold text-gray-900">
                       {total.weight}
                     </td>
                   </tr>
@@ -753,7 +750,7 @@ function Page() {
         </div>
       )}
       {error && (
-        <div className="text-red-500 text-center mt-2">
+        <div className="mt-2 text-center text-red-500">
           Error fetching data. Please try again.
         </div>
       )}
